@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Conditional Statements/Conditional Statements.iml" filepath="$PROJECT_DIR$/Conditional Statements/Conditional Statements.iml" />
       <module fileurl="file://$PROJECT_DIR$/Conditional_Statements/Conditional_Statements.iml" filepath="$PROJECT_DIR$/Conditional_Statements/Conditional_Statements.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Loops/Loops.iml" filepath="$PROJECT_DIR$/Loops/Loops.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Sirma Academy 20242025.iml" filepath="$PROJECT_DIR$/.idea/Sirma Academy 20242025.iml" />
     </modules>
   </component>
