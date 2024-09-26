@@ -10,5 +10,7 @@ public class Marks_1 {
 
         else
             System.out.println("No output!\n");
+
+        scanner.close();
     }
 }

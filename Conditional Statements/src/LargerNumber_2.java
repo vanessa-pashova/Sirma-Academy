@@ -14,5 +14,7 @@ public class LargerNumber_2 {
 
         else
             System.out.println("They are equal");
+
+        scanner.close();
     }
 }
