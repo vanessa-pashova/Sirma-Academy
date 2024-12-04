@@ -1,1 +1,2 @@
-arrivalDate,departureDate,roomType,reservationId
+bookingId,roomNumber,roomType,arrivalDate,departureDate,users
+1,102,2024-12-06,2024-12-09,kamshi

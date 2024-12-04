@@ -46,11 +46,10 @@ public class Room {
 
     public void setRoomType(String roomType) {
         if (!RoomManager.getRoomTypes().containsKey(roomType))
-            throw new IllegalArgumentException("Invalid room type. Available types: " + RoomManager.getRoomTypes().keySet());
+            throw new IllegalArgumentException(">! Invalid room type. Allowed types: " + RoomManager.getRoomTypes().keySet());
 
         this.roomType = roomType;
     }
-
 
     public void setCancellationFee(double cancellationFee) {
         if(cancellationFee < 0)
@@ -67,11 +66,15 @@ public class Room {
     }
 
     public void setStatus(String status) {
-        if(status.equals("Available") || status.equals("Reserved"))
-            this.status = status;
+        if (!isValidStatus(status))
+            throw new IllegalArgumentException(">! Invalid room status. Allowed values: Available, Reserved.");
 
-        else
-            throw new IllegalArgumentException("Status ");
+        this.status = status;
+    }
+
+
+    private boolean isValidStatus(String status) {
+        return status.equals("Available") || status.equals("Reserved");
     }
 
     @Override

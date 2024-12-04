@@ -8,7 +8,7 @@ public class User {
 
     public User(String firstName, String familyName, String username, String password, String bookingHistory) {
         this.setName(firstName, familyName);
-        this.username = username;
+        this.setUsername(username);
         this.setPassword(password);
         this.bookingHistory = bookingHistory;
     }
@@ -34,12 +34,11 @@ public class User {
     }
 
     void setName(String firstName, String familyName) {
-        if((firstName == null || firstName.isEmpty()) || (familyName == null || familyName.isEmpty()))
+        if (firstName == null || firstName.isEmpty() || familyName == null || familyName.isEmpty())
             throw new IllegalArgumentException(">! Name cannot be null or empty.");
 
-        char firstCharFirstName = firstName.charAt(0), firstCharLastName = firstName.charAt(0);
-        if(!Character.isUpperCase(firstCharFirstName) || !Character.isUpperCase(firstCharLastName))
-            throw new IllegalArgumentException(">! Name contains invalid characters.");
+        if (!Character.isUpperCase(firstName.charAt(0)) || !Character.isUpperCase(familyName.charAt(0)))
+            throw new IllegalArgumentException(">! Names must start with uppercase letters.");
 
         this.firstName = firstName;
         this.familyName = familyName;
@@ -64,12 +63,20 @@ public class User {
             this.password = password;
     }
 
-    public void addBooking(String booking) {
-        if(bookingHistory.isEmpty())
-            bookingHistory = booking;
+    public String getFormattedBookingHistory() {
+        if (this.bookingHistory == null || this.bookingHistory.isEmpty())
+            return "No bookings available.";
 
-        else
-            bookingHistory += ";" + booking;
+        StringBuilder formattedHistory = new StringBuilder();
+        String[] bookings = this.bookingHistory.split(";");
+
+        for (int i = 0; i < bookings.length; i += 3) {
+            formattedHistory.append("Room: ").append(bookings[i])
+                    .append(", Start Date: ").append(bookings[i + 1])
+                    .append(", End Date: ").append(bookings[i + 2]).append("\n");
+        }
+
+        return formattedHistory.toString();
     }
 
     @Override

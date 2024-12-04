@@ -1,3 +1,10 @@
-firstName,familyName,username,password,bookingHistory
-Vanesa,Pashova,van.pash,pastaLoVeR1,101|2023-12-10|2023-12-15
-Martin,Doych,martata,motORGP15,
+FirstName,FamilyName,Username,Password,BookingHistory
+Ivan,Petrov,ivanp,Passw0rd123,101;2024-01-15;2024-01-20
+Eva,Georgieva,eva_g,SecurePass2023,202;2024-02-01;2024-02-05
+Dimitar,Iliev,dimitar_i,HelloWorld2024,303;2024-03-10;2024-03-15
+Elena,Kostova,elena_k,StrongPass@123,104;2024-04-01;2024-04-05
+Petya,Stoicheva,petya_s,BestPass@456
+Deyan,Petrov,pdidi,didiSkaridi1,
+Sali,Masali,sali_masali,saliPraviMasali300,
+Rosi,Pashova,rosi17,mimOZI17,
+Kami,Toteva,kamshi,kamiVanko22,
