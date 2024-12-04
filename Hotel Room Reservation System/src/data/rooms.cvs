@@ -1,0 +1,5 @@
+RoomNumber,Type,PricePerNight,CancellationFee,Status
+101,Deluxe,150.00,50.00,available
+102,Suite,300.00,100.00,booked
+104,Double,200.00,30.00,available
+103,Single,100.00,20.00,available

@@ -1,0 +1,5 @@
+Type,Amenities,MaxOccupancy
+Deluxe,Wi-Fi;Mini-Bar;Jacuzzi;Sea View;Air Conditioning,2
+Suite,Wi-Fi;Mini-Bar;Sea View,4
+Double,Wi-Fi;TV;Air Conditioning,2
+Single,Wi-Fi;TV,1
