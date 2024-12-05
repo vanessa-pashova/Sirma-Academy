@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class UserManager {
-    private static final String USERS_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Hotel Room Reservation System/src/data/users.cvs";
+    private static final String USERS_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Hotel Room Reservation System/src/data/users.cvs";
     private static Map<String, User> users = new HashMap<>();
     public static User currentUser;
 

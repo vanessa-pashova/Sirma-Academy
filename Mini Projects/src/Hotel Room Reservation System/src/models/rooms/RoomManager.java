@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 public class RoomManager {
-    private static final String ROOMS_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Hotel Room Reservation System/src/data/rooms.cvs";
-    private static final String ROOMSTYPE_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Hotel Room Reservation System/src/data/room_types.cvs";
+    private static final String ROOMS_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Hotel Room Reservation System/src/data/rooms.cvs";
+    private static final String ROOMSTYPE_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Hotel Room Reservation System/src/data/room_types.cvs";
 
     private static final List<Room> rooms = new ArrayList<>();
     private static final Map<String, String[]> roomTypes = new HashMap<>();

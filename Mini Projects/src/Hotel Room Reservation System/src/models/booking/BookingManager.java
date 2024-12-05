@@ -2,7 +2,6 @@ package models.booking;
 
 import models.rooms.Room;
 import models.rooms.RoomManager;
-import models.user.User;
 import models.user.UserManager;
 
 import java.io.*;
@@ -12,7 +11,7 @@ import java.util.*;
 
 public class BookingManager {
     private static List<Booking> bookings = new ArrayList<>();
-    private static final String RESERVATIONS = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Hotel Room Reservation System/src/data/reservations.cvs";
+    private static final String RESERVATIONS = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Hotel Room Reservation System/src/data/reservations.cvs";
 
     public static void loadReservationsFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(RESERVATIONS))) {
