@@ -12,5 +12,5 @@ public interface Item {
     void setPrice(double price);
 
     double calculatePrice();        //Calculation for the price due to possible discounts
-    void printDescription();
+//    void printDescription();
 }

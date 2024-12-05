@@ -19,6 +19,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     private String itemDetails;
     private String itemDescription;
 
+    //Getters
     @Override
     public String getName() {
         return this.itemName;
@@ -69,6 +70,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         return this.itemDescription;
     }
 
+    //Setters
     @Override
     public void setName(String itemName) {
         if(itemName == null || itemName.isEmpty())
@@ -83,13 +85,13 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
             throw new IllegalStateException(">! Price cannot be less than 0.10 [AbstactItem, setPrice()].");
 
         if(itemDiscount == 0) {
-            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
+//            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
             this.itemPrice = itemPrice;
         }
 
         else {
             System.out.println("------- ITEM DISCOUNT APPLIED ------");
-            this.itemPrice =itemPrice - (itemPrice * itemDiscount);
+            this.itemPrice = calculatePrice();
         }
     }
 
@@ -123,11 +125,11 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
 
     @Override
     public void setExpiry(String creationDate, String expirationDate) {
-        String format = "dd-MM-yyyy";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-
         if((creationDate == null || creationDate.isEmpty()) || (expirationDate == null || expirationDate.isEmpty()))
             throw new IllegalStateException(">! Date cannot be empty [AbstactItem, setExpiry()].");
+
+        String format = "dd-MM-yyyy";                                           //format for the dates
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);      //creating the formatter
 
         LocalDate creation = null, expiration = null;
         try {
@@ -167,9 +169,20 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         this.itemDescription = itemDescription.toUpperCase();
     }
 
-    AbstractItem(String name, double price, CategorizableType category) {
+    @Override
+    public double calculatePrice() {
+        return this.itemPrice -= (this.itemPrice * itemDiscount);
+    }
+
+    public AbstractItem(String name, double price, CategorizableType category) {
         this.setName(name);
         this.setPrice(price);
         this.setCategory(category);
+    }
+
+    public AbstractItem() {
+        this.itemName = null;
+        this.itemPrice = 0;
+        this.category = null;
     }
 }
