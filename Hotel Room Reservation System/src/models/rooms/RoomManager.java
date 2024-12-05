@@ -41,6 +41,15 @@ public class RoomManager {
         }
     }
 
+    public static Room findRoomByNumber(int roomNumber) {
+        for (Room room : rooms) {
+            if (room.getRoomNumber() == roomNumber)
+                return room;
+        }
+
+        return null;
+    }
+
     public static void loadRoomsTypes() {
         try (BufferedReader reader = new BufferedReader(new FileReader(ROOMSTYPE_FILE))) {
             File file = new File(ROOMSTYPE_FILE);
@@ -59,7 +68,6 @@ public class RoomManager {
 
                 String type = details[0].trim();
                 String[] amenities = details[1].split(";");
-                int maxOccupancy = Integer.parseInt(details[2].trim());
 
                 roomTypes.put(type, amenities);
             }

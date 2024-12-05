@@ -63,24 +63,8 @@ public class User {
             this.password = password;
     }
 
-    public String getFormattedBookingHistory() {
-        if (this.bookingHistory == null || this.bookingHistory.isEmpty())
-            return "No bookings available.";
-
-        StringBuilder formattedHistory = new StringBuilder();
-        String[] bookings = this.bookingHistory.split(";");
-
-        for (int i = 0; i < bookings.length; i += 3) {
-            formattedHistory.append("Room: ").append(bookings[i])
-                    .append(", Start Date: ").append(bookings[i + 1])
-                    .append(", End Date: ").append(bookings[i + 2]).append("\n");
-        }
-
-        return formattedHistory.toString();
-    }
-
     @Override
     public String toString() {
-        return ("[ " + this.firstName + " " + this.familyName + ": username --> " + this.username + " has the following booking history: " + this.bookingHistory + " ]\n");
+        return ("[ " + this.firstName + " " + this.familyName + ": username --> " + this.username + " has the following booking history: " + this.bookingHistory + " ]");
     }
 }

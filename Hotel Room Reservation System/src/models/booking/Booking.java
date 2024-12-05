@@ -17,7 +17,7 @@ public class Booking {
     public Booking(int bookingID, int nightsNumber, Room room, String arrivalDate, String departureDate, User reservator) {
         this.setBookingID(bookingID);
         this.setNightsNumber(nightsNumber);
-        this.setRoom(room);
+        this.room = room;
         this.setArrivalDate(arrivalDate);
         this.setDepartureDate(departureDate);
         this.setReservator(reservator);
@@ -64,17 +64,6 @@ public class Booking {
         this.nightsNumber = nightsNumber;
     }
 
-    public void setRoom(Room room) {
-        if (room == null)
-            throw new IllegalArgumentException(">! No room provided.");
-
-        if (room.getStatus().equals("Reserved"))
-            throw new IllegalArgumentException(">! Room is already reserved.");
-
-        this.room = room;
-    }
-
-
     public void setArrivalDate(String arrivalDate) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -103,7 +92,6 @@ public class Booking {
         this.reservator = reservator;
     }
 
-
     public double calculateTotalCost() {
         return this.nightsNumber * this.room.getPrice();
     }
@@ -116,5 +104,4 @@ public class Booking {
         return "[ BookingID: " + this.bookingID + ", User: " + this.reservator.getFirstName() + " " + this.reservator.getFamilyName() +
                 ", Nights: " + this.nightsNumber + ", Total Cost: " + calculateTotalCost() + " BGN, Room: " + this.room.getRoomType() + " ]\n";
     }
-
 }

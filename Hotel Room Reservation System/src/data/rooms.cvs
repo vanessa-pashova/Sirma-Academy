@@ -3,9 +3,9 @@ RoomNumber,Type,PricePerNight,CancellationFee,Status
 102,Suite,300.00,100.00,Reserved
 103,Single,100.00,20.00,Available
 104,Double,200.00,30.00,Reserved
-201,Deluxe,170.00,60.00,Available
+201,Deluxe,170.00,60.00,Reserved
 202,Suite,320.00,110.00,Reserved
-203,Double,220.00,40.00,Available
+203,Double,220.00,40.00,Reserved
 204,Single,90.00,15.00,Reserved
 301,Suite,340.00,120.00,Available
 302,Deluxe,180.00,70.00,Reserved

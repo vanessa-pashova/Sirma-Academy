@@ -15,7 +15,7 @@ public class UserManager {
     }
 
     private static void saveUser(User user) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) { // true за append режим
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_FILE, true))) {
             File file = new File(USERS_FILE);
             if (!file.exists()) {
                 file.createNewFile();

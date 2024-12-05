@@ -65,19 +65,17 @@ public class HotelReservationSystem {
                         System.out.println("----- YOUR BOOKINGS -----");
 
                         if (BookingManager.getCurrentUserBookings().isEmpty())
-                            System.out.println(">! No bookings found.\n-----------------------------\n");
+                            System.out.println(">! No bookings found.\n-------------------------");
 
-                        else
-                            BookingManager.getCurrentUserBookings().forEach(System.out::println);
+                        else {
+                            BookingManager.getCurrentUserBookings().forEach(System.out::print);
+                            System.out.println("-------------------------");
+                        }
                     }
 
                     case 2 -> new BookingManager().makeReservation();
 
-                    case 3 -> {
-                        System.out.print("> Enter the booking ID to cancel: ");
-                        int bookingId = Integer.parseInt(scanner.nextLine());
-                        BookingManager.cancelReservation();
-                    }
+                    case 3 -> BookingManager.cancelReservation();
 
                     case 4 -> {
                         System.out.println("----- SEARCH BOOKINGS -----");
