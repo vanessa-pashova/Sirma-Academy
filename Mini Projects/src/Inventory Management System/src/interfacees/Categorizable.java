@@ -5,7 +5,7 @@ public interface Categorizable {
         ELECTRONICS,
         BOOKS,
         CLOTHING,
-        FOOD;
+        GROCERIES;
     }
 
     CategorizableType getCategory();
