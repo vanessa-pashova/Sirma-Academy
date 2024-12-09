@@ -1,4 +1,4 @@
-package interfacees;
+package models.interfaces;
 
 public interface Perishable {
 //    boolean isExpired();

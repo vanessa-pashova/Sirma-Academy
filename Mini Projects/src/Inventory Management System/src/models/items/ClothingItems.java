@@ -1,6 +1,6 @@
 package models.items;
 
-public class ClothingItems extends InventoryManager{
+public class ClothingItems extends InventoryManager {
     enum ClothesCategory {
         TSHIRTS,
         JEANS,
@@ -14,29 +14,50 @@ public class ClothingItems extends InventoryManager{
         ZARA;
     }
 
-    private ClothesCategory category;
+    private ClothesCategory clothesCategory;
     private Brands brand;
     private String size;
     private String color;
 
-    public ClothingItems(String nameOfItem, double price, String brand, String size, String color) {
+    public ClothingItems(String nameOfItem, double price, double discount, String brand, String size, String color, String details) {
         this.setName(nameOfItem);
+        this.setPrice(price);
+        this.setBrand(brand);
+        this.setSize(size);
+        this.setColor(color);
+        this.setItemDetails(details);
+    }
+
+    public ClothesCategory getClothesCategory() {
+        return this.clothesCategory;
+    }
+
+    public Brands getBrand() {
+        return this.brand;
+    }
+
+    public String getSize() {
+        return this.size;
+    }
+
+    public String getColor() {
+        return this.color;
     }
 
     public void setName(String name) {
         if (name.toUpperCase().equals("TSHIRTS") || name.toUpperCase().equals("T-SHIRTS"))
-            this.category = ClothesCategory.TSHIRTS;
+            this.clothesCategory = ClothesCategory.TSHIRTS;
 
         else if(name.toUpperCase().equals("JEANS")) {
-            this.category = ClothesCategory.JEANS;
+            this.clothesCategory = ClothesCategory.JEANS;
         }
 
         else if(name.toUpperCase().equals("JACKETS")) {
-            this.category = ClothesCategory.JACKETS;
+            this.clothesCategory = ClothesCategory.JACKETS;
         }
 
         else if(name.toUpperCase().equals("SHOES")) {
-            this.category = ClothesCategory.SHOES;
+            this.clothesCategory = ClothesCategory.SHOES;
         }
 
         else
@@ -84,12 +105,13 @@ public class ClothingItems extends InventoryManager{
             this.getInventory().forEach((id, item) -> {
                 System.out.println("ID: " + id +
                         " Name: " + item.getName() +
-                        " Discount: " + item.getDiscount() +
-                        " Price (after discount): " + item.getPrice() +
-                        " Clothing item: " + this.category +
-                        " Brand: " + this.brand +
-                        " Size: " + this.size +
-                        " Color: " + this.color);
+                        ", Discount: " + item.getDiscount() +
+                        ", Price (after discount): " + item.getPrice() +
+                        ", Clothing item: " + this.clothesCategory +
+                        ", Brand: " + this.brand +
+                        ", Size: " + this.size +
+                        ", Color: " + this.color +
+                        ", Details: " + this.getItemDetails());
             });
             System.out.println("> Total Items: " + this.getInventory().size());
             System.out.println("-------------------------------------------");

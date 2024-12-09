@@ -1,15 +1,38 @@
 package models.items;
 
 public class ElectronicItems extends InventoryManager {
-    private int warrantyPeriod;
+    enum Company {
+        APPLE,
+        PHILIPS,
+        SAMSUNG;
+    }
 
-    public ElectronicItems(String name, double price, int warrantyPeriod) {
-        super(name, price, CategorizableType.ELECTRONICS);
+    private int warrantyPeriod;
+    private Company brand;
+
+    public ElectronicItems(String name, double price, String brand, int warrantyPeriod, double discount, String details) {
+        super(name, price, CategorizableType.ELECTRONICS, discount);
+        this.setBrand(brand);
         this.setWarrantyPeriod(warrantyPeriod);
+        this.setFragile(true);
+        this.setSellable(true);
+        this.setItemDetails(details);
+    }
+
+    public Company getBrand() {
+        return brand;
     }
 
     public int getWarrantyPeriod() {
         return this.warrantyPeriod;
+    }
+
+    public void setBrand(String brand) {
+        switch (brand.toUpperCase()) {
+            case "APPLE" -> this.brand = Company.APPLE;
+            case "PHILIPS" -> this.brand = Company.PHILIPS;
+            case "SAMSUNG" -> this.brand = Company.SAMSUNG;
+        }
     }
 
     public void setWarrantyPeriod(int warrantyPeriod) {
@@ -35,8 +58,10 @@ public class ElectronicItems extends InventoryManager {
                         ", Name: " + item.getName() +
                         ", Discount: " + item.calculatePrice() +
                         ", Price (after discount: " + item.getPrice() +
+                        ", Brand: " + this.brand +
                         ", Warranty Period: " + this.getWarrantyPeriod() +
-                        ", Category: " + item.getCategory());
+                        ", Category: " + item.getCategory() +
+                        ", Details: " + item.getItemDetails());
             });
             System.out.println("> Total Items: " + this.getInventory().size());
             System.out.println("-------------------------------------------");

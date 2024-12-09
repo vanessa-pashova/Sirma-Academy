@@ -1,4 +1,4 @@
-package interfacees;
+package models.interfaces;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -84,11 +84,12 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
             throw new IllegalStateException(">! Price cannot be less than 0.10 [AbstactItem, setPrice()].");
 
         if(itemDiscount == 0) {
-//            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
+            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
             this.itemPrice = itemPrice;
         }
 
         else {
+            System.out.println("[ Price before discount: " + itemPrice + " ]");
             System.out.println("------- ITEM DISCOUNT APPLIED ------");
             this.itemPrice = calculatePrice();
         }
@@ -173,10 +174,11 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         return this.itemPrice -= (this.itemPrice * itemDiscount);
     }
 
-    public AbstractItem(String name, double price, CategorizableType category) {
+    public AbstractItem(String name, double price, CategorizableType category, double discount) {
         this.setName(name);
         this.setPrice(price);
         this.setCategory(category);
+        this.setDiscount(discount);
     }
 
     public AbstractItem() {

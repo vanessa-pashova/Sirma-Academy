@@ -1,6 +1,6 @@
 package models.items;
 
-public class GroceryItems extends InventoryManager{
+public class GroceryItems extends InventoryManager {
     private double weight;
     private int calories;
 
