@@ -1,9 +1,9 @@
 package models.items;
 
+import models.handlers_for_the_items.*;
 import models.interfaces.AbstractItem;
 
 import java.util.TreeMap;
-import java.util.Scanner;
 
 public class InventoryManager extends AbstractItem {
     private TreeMap<String, AbstractItem> inventory;
@@ -19,14 +19,6 @@ public class InventoryManager extends AbstractItem {
 
     public TreeMap<String, AbstractItem> getInventory() {
         return this.inventory;
-    }
-
-    public void addItem(AbstractItem item) {
-        if (item == null)
-            throw new IllegalArgumentException(">! Cannot add null item [InventoryManager, addItem()].");
-
-        String id = generateUniqueID(item);
-        inventory.put(id, item);
     }
 
     private String generateUniqueID(AbstractItem item) {
@@ -49,13 +41,117 @@ public class InventoryManager extends AbstractItem {
         return prefix + "-" + (inventory.size() + 1);
     }
 
+    private String getFilePathForItem(AbstractItem item) {
+        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/cvsFiles/items/";
+
+        if (item instanceof BookItems)
+            return pathToDir + "Books.csv";
+
+        if (item instanceof ClothingItems)
+            return pathToDir + "Clothes.csv";
+
+        if (item instanceof ElectronicItems)
+            return pathToDir + "Electronics.csv";
+
+        if (item instanceof GroceryItems)
+            return pathToDir + "Groceries.csv";
+
+        throw new IllegalArgumentException(">! Unknown item type [InventoryManager, getFilePathForItem()].");
+    }
+
+    public void loadInventory() {
+        BookItemsHandler bookHandler = new BookItemsHandler() {};
+        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/cvsFiles/items/";
+        TreeMap<String, BookItems> books = bookHandler.loadFromCVS(pathToDir + "Books.csv");
+        this.inventory.putAll(books);
+
+        ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
+        TreeMap<String, ClothingItems> clothings = clothesHandler.loadFromCVS(pathToDir + "Clothes.csv");
+        this.inventory.putAll(clothings);
+
+        ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
+        TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCVS(pathToDir + "Electronics.csv");
+        this.inventory.putAll(electronics);
+
+        GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
+        TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCVS(pathToDir + "Groceries.csv");
+        this.inventory.putAll(groceries);
+    }
+
+    public void addItem(AbstractItem item) {
+        if (item == null)
+            throw new IllegalArgumentException(">! Cannot add null item [InventoryManager, addItem()].");
+
+        String id = generateUniqueID(item);
+        inventory.put(id, item);
+
+        String filePath = getFilePathForItem(item);
+
+        if (item instanceof BookItems) {
+            BookItemsHandler bookHandler = new BookItemsHandler() {};
+            TreeMap<String, BookItems> books = bookHandler.loadFromCVS(filePath);
+            books.put(id, (BookItems) item);
+            bookHandler.saveToCVS(filePath, books);
+        }
+
+        else if (item instanceof ClothingItems) {
+            ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
+            TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCVS(filePath);
+            clothes.put(id, (ClothingItems) item);
+            clothesHandler.saveToCVS(filePath, clothes);
+        }
+
+        else if (item instanceof ElectronicItems) {
+            ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
+            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCVS(filePath);
+            electronics.put(id, (ElectronicItems) item);
+            electronicHandler.saveToCVS(filePath, electronics);
+        }
+
+        else if (item instanceof GroceryItems) {
+            GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
+            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCVS(filePath);
+            groceries.put(id, (GroceryItems) item);
+            groceryHandler.saveToCVS(filePath, groceries);
+        }
+    }
+
     public void removeItem(String id) {
-        if (inventory.containsKey(id))
-            inventory.remove(id);
-
-
-        else
+        if (!inventory.containsKey(id))
             throw new IllegalArgumentException(">! Item does not exist [InventoryManager, removeItem()].");
+
+        AbstractItem item = inventory.get(id);
+        inventory.remove(id);
+
+        String filePath = getFilePathForItem(item);
+
+        if (item instanceof BookItems) {
+            BookItemsHandler bookHandler = new BookItemsHandler() {};
+            TreeMap<String, BookItems> books = bookHandler.loadFromCVS(filePath);
+            books.remove(id);
+            bookHandler.saveToCVS(filePath, books);
+        }
+
+        else if (item instanceof ClothingItems) {
+            ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
+            TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCVS(filePath);
+            clothes.remove(id);
+            clothesHandler.saveToCVS(filePath, clothes);
+        }
+
+        else if (item instanceof ElectronicItems) {
+            ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
+            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCVS(filePath);
+            electronics.remove(id);
+            electronicHandler.saveToCVS(filePath, electronics);
+        }
+
+        else if (item instanceof GroceryItems) {
+            GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
+            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCVS(filePath);
+            groceries.remove(id);
+            groceryHandler.saveToCVS(filePath, groceries);
+        }
     }
 
     public void addItemDetails(String id, String details) {
