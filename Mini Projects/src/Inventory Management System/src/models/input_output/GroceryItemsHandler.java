@@ -19,6 +19,7 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
                 System.out.print(">! Error while creating a loading file Groceries.cvs, [GroceryItemsHandler, loadFromCVS()].");
                 System.out.println(e.getMessage());
             }
+            System.out.println("[ Groceries.cvs created -> GroceryItemsHandler, loadFromCVS()]");
         }
 
         TreeMap<Integer, GroceryItems> items = new TreeMap<>();
@@ -41,7 +42,7 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
                 items.put(id, item);
             }
         } catch (IOException e) {
-            System.out.print(">! Error while loading Clothes.cvs, [GroceryItemsHandler, loadFromCVS()]. ");
+            System.out.print(">! Error while loading Groceries.cvs, [GroceryItemsHandler, loadFromCVS()]. ");
             System.out.println(e.getMessage());
         }
 
@@ -51,7 +52,7 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
     @Override
     public void saveToCVS(String filename, TreeMap<Integer, GroceryItems> items) {
         if(filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ClothesItemsHandler, saveToCVS()]. ");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, saveToCVS()]. ");
 
         File file = new File(filename);
         if(!file.exists()) {

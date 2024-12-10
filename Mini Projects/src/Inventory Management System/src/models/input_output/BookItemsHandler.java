@@ -17,7 +17,7 @@ public abstract class BookItemsHandler implements CVSHandler<BookItems> {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.out.print(">! Error while creation loading file Books.cvs, [BookItemsHandler, loadFromCVS().]");
+                System.out.print(">! Error while creating a loading file Books.cvs, [BookItemsHandler, loadFromCVS().]");
                 System.out.println(e.getMessage());
             }
             System.out.println("[ Books.cvs created -> BookItemsHandler, loadFromCVS()]");

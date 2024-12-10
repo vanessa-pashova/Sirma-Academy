@@ -19,7 +19,7 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
                 System.out.print(">! Error while creating a loading file Clothes.cvs, [ClothesItemsHandler, loadFromCVS()]. ");
                 System.out.println(e.getMessage());
             }
-            System.out.println("[ Books.cvs created -> ClothesItemsHandler, loadFromCVS()]");
+            System.out.println("[ Clothes.cvs created -> ClothesItemsHandler, loadFromCVS()]");
         }
 
         TreeMap<Integer, ClothingItems> items = new TreeMap<>();
@@ -78,7 +78,7 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
                 }
             });
         } catch (IOException e) {
-            System.out.print(">! Error while writing Clothes.cvs file, [ClothesItemsHandler, saveToCVS()]. ");
+            System.out.print(">! Error while saving Clothes.cvs, [ClothesItemsHandler, saveToCVS()]. ");
             System.out.println(e.getMessage());
         }
     }

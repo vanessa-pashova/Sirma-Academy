@@ -16,10 +16,10 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.out.print(">! Error while creating a loading file Clothes.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
+                System.out.print(">! Error while creating a loading file Electronics.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
                 System.out.println(e.getMessage());
             }
-//            throw new IllegalArgumentException(">! File does not exist, [ElectronicItemsHandler, loadFromCVS()].");
+            System.out.println("[ Electronics.cvs created -> ElectronicItemsHandler, loadFromCVS()]");
         }
 
         TreeMap<Integer, ElectronicItems> items = new TreeMap<>();
@@ -40,7 +40,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                 items.put(id, item);
             }
         } catch (IOException e) {
-            System.out.print(">! Error while loading ElectronicItems from file Electronics.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
+            System.out.print(">! Error while loading Electronics.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
             System.out.println(e.getMessage());
         }
 
@@ -60,7 +60,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                 writer.write("ID|Name|Price|Discount|Brand|Warranty|Details");
                 writer.newLine();
             } catch (IOException e) {
-                System.out.print(">! Error while creating Electronics CVS file, [ElectronicItemsHandler, saveToCVS()]. ");
+                System.out.print(">! Error while creating Electronics.cvs, [ElectronicItemsHandler, saveToCVS()]. ");
                 System.out.println(e.getMessage());
             }
         }
@@ -71,12 +71,12 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                     writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getBrand() + "|" + item.getWarrantyPeriod());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving items in Electronics CVS file. [ElectronicItemsHandler, saveToCVS()]. ");
+                    System.out.print(">! Error while saving items in Electronics.cvs, [ElectronicItemsHandler, saveToCVS()]. ");
                     System.out.println(e.getMessage());
                 }
             });
         } catch (IOException e) {
-            System.out.print(">! Error while writing Electronics.cvs file, [ElectronicItemsHandler, saveToCVS()]. ");
+            System.out.print(">! Error while saving Electronics.cvs, [ElectronicItemsHandler, saveToCVS()]. ");
             System.out.println(e.getMessage());
         }
     }
