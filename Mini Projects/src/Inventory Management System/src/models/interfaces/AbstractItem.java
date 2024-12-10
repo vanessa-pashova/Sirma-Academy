@@ -18,6 +18,19 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     private String itemDetails;
     private String itemDescription;
 
+    public AbstractItem(String name, double price, CategorizableType category, double discount) {
+        this.setName(name);
+        this.setPrice(price);
+        this.setCategory(category);
+        this.setDiscount(discount);
+    }
+
+    public AbstractItem() {
+        this.itemName = null;
+        this.itemPrice = 0;
+        this.category = null;
+    }
+
     //Getters
     @Override
     public String getName() {
@@ -176,17 +189,4 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
 
     @Override
     public abstract void printDetails();
-
-    public AbstractItem(String name, double price, CategorizableType category, double discount) {
-        this.setName(name);
-        this.setPrice(price);
-        this.setCategory(category);
-        this.setDiscount(discount);
-    }
-
-    public AbstractItem() {
-        this.itemName = null;
-        this.itemPrice = 0;
-        this.category = null;
-    }
 }
