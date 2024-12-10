@@ -3,7 +3,11 @@ package models.items;
 public class GroceryItems extends InventoryManager {
     private double weight;
     private int calories;
+    private static int groceryIDCounter = 1;
 
+    private String generateGroceryID() {
+        return "G-" + (groceryIDCounter++);
+    }
     public GroceryItems(String name, double price, double discount, String description, double weight, int calories, String creationDate, String expiryDate) {
         super(name, price, CategorizableType.GROCERIES, discount);
         this.setWeight(weight);
@@ -37,7 +41,7 @@ public class GroceryItems extends InventoryManager {
     }
 
     @Override
-    public void printInventory() {
+    public void printDetails() {
         if(this.getInventory().isEmpty())
             System.out.println("------ GROCERY INVENTORY'S EMPTY, NOTHING TO SHOW ------");
 

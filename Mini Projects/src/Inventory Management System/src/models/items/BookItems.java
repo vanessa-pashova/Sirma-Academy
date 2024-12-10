@@ -13,6 +13,11 @@ public class BookItems extends InventoryManager {
     private Genre genre;
     private int totalPages;
     private String publisher;
+    private static int bookIDCounter = 1;
+
+    private String generateBookID() {
+        return "B-" + (bookIDCounter++);
+    }
 
     public BookItems(String name, double price, double discount, String author, String genre, int totalPages, String publisher, String description) {
         super(name, price, CategorizableType.BOOKS, discount);
@@ -73,7 +78,7 @@ public class BookItems extends InventoryManager {
     }
 
     @Override
-    public void printInventory() {
+    public void printDetails() {
         if (this.getInventory().isEmpty()) {
             System.out.println("------ BOOK INVENTORY'S EMPTY, NOTHING TO SHOW ------");
         } else {

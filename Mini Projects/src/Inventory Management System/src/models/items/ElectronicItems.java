@@ -9,6 +9,11 @@ public class ElectronicItems extends InventoryManager {
 
     private int warrantyPeriod;
     private Company brand;
+    private static int electronicIDCounter = 1;
+
+    private String generateElectronicID() {
+        return "E-" + (electronicIDCounter++);
+    }
 
     public ElectronicItems(String name, double price, String brand, int warrantyPeriod, double discount, String details) {
         super(name, price, CategorizableType.ELECTRONICS, discount);
@@ -47,7 +52,7 @@ public class ElectronicItems extends InventoryManager {
     }
 
     @Override
-    public void printInventory() {
+    public void printDetails() {
         if(this.getInventory().isEmpty())
             System.out.println("------ ELECTRONIC INVENTORY'S EMPTY, NOTHING TO SHOW ------");
 

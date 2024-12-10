@@ -18,6 +18,11 @@ public class ClothingItems extends InventoryManager {
     private Brands brand;
     private String size;
     private String color;
+    private static int clothingIDCounter = 1;
+
+    private String generateClothingID() {
+        return "C-" + (clothingIDCounter++);
+    }
 
     public ClothingItems(String nameOfItem, double price, double discount, String brand, String size, String color, String details) {
         this.setName(nameOfItem);
@@ -96,7 +101,7 @@ public class ClothingItems extends InventoryManager {
     }
 
     @Override
-    public void printInventory() {
+    public void printDetails() {
         if(this.getInventory().isEmpty())
             System.out.println("------ GROCERY INVENTORY'S EMPTY, NOTHING TO SHOW ------");
 
