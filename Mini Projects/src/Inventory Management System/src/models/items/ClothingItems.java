@@ -104,14 +104,14 @@ public class ClothingItems extends InventoryManager {
             System.out.println("------ PRINTING GROCERY INVENTORY INFORMATION ------");
             this.getInventory().forEach((id, item) -> {
                 System.out.println("ID: " + id +
-                        " Name: " + item.getName() +
-                        ", Discount: " + item.getDiscount() +
-                        ", Price (after discount): " + item.getPrice() +
-                        ", Clothing item: " + this.clothesCategory +
-                        ", Brand: " + this.brand +
-                        ", Size: " + this.size +
-                        ", Color: " + this.color +
-                        ", Details: " + this.getItemDetails());
+                        "| Name: " + item.getName() +
+                        "| Discount: " + item.getDiscount() +
+                        "| Price (after discount): " + item.getPrice() +
+                        "| Clothing item: " + this.clothesCategory +
+                        "| Brand: " + this.brand +
+                        "| Size: " + this.size +
+                        "| Color: " + this.color +
+                        "| Details: " + this.getItemDetails());
             });
             System.out.println("> Total Items: " + this.getInventory().size());
             System.out.println("-------------------------------------------");

@@ -6,12 +6,15 @@ public class BookItems extends InventoryManager {
     private int totalPages;
     private String publisher;
 
-    public BookItems(String name, double price, String author, String genre, int totalPages, String publisher) {
-        super(name, price, CategorizableType.BOOKS);
+    public BookItems(String name, double price, double discount, String author, String genre, int totalPages, String publisher, String description) {
+        super(name, price, CategorizableType.BOOKS, discount);
         this.setAuthor(author);
         this.setGenre(genre);
         this.setTotalPages(totalPages);
         this.setPublisher(publisher);
+        this.setItemDescription(description);
+        this.setFragile(false);
+        this.setSellable(true);
     }
 
     public String getAuthor() {
@@ -66,13 +69,13 @@ public class BookItems extends InventoryManager {
             System.out.println("------ PRINTING BOOK INVENTORY INFORMATION ------");
             this.getInventory().forEach((id, item) -> {
                 System.out.println("ID: " + id +
-                        ", Name: " + item.getName() +
-                        ", Author: " + this.getAuthor() +
-                        ", Genre: " + this.getGenre() +
-                        ", Pages: " + this.getTotalPages() +
-                        ", Publisher: " + this.getPublisher() +
-                        ", Discount: " + item.getDiscount() +
-                        ", Price (after discount): " + item.getPrice());
+                        "| Name: " + item.getName() +
+                        "| Author: " + this.getAuthor() +
+                        "| Genre: " + this.getGenre() +
+                        "| Pages: " + this.getTotalPages() +
+                        "| Publisher: " + this.getPublisher() +
+                        "| Discount: " + item.getDiscount() +
+                        "| Price (after discount): " + item.getPrice());
             });
             System.out.println("> Total Books: " + this.getInventory().size());
             System.out.println("-------------------------------------------");

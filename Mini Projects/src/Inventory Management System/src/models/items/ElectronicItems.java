@@ -55,13 +55,13 @@ public class ElectronicItems extends InventoryManager {
             System.out.println("------ PRINTING ELECTRONIC INVENTORY INFORMATION ------");
             this.getInventory().forEach((id, item) -> {
                 System.out.println("ID: " + id +
-                        ", Name: " + item.getName() +
-                        ", Discount: " + item.calculatePrice() +
-                        ", Price (after discount: " + item.getPrice() +
-                        ", Brand: " + this.brand +
-                        ", Warranty Period: " + this.getWarrantyPeriod() +
-                        ", Category: " + item.getCategory() +
-                        ", Details: " + item.getItemDetails());
+                        "| Name: " + item.getName() +
+                        "| Discount: " + item.calculatePrice() +
+                        "| Price (after discount: " + item.getPrice() +
+                        "| Brand: " + this.brand +
+                        "| Warranty Period: " + this.getWarrantyPeriod() +
+                        "| Category: " + item.getCategory() +
+                        "| Details: " + item.getItemDetails());
             });
             System.out.println("> Total Items: " + this.getInventory().size());
             System.out.println("-------------------------------------------");

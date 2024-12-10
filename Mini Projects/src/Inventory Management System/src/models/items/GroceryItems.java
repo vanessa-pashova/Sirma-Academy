@@ -4,10 +4,14 @@ public class GroceryItems extends InventoryManager {
     private double weight;
     private int calories;
 
-    public GroceryItems(String name, double price, double weight, int calories) {
-        super(name, price, CategorizableType.GROCERIES);
+    public GroceryItems(String name, double price, double discount, String description, double weight, int calories, String creationDate, String expiryDate) {
+        super(name, price, CategorizableType.GROCERIES, discount);
         this.setWeight(weight);
         this.setCalories(calories);
+        this.setItemDescription(description);
+        this.setExpiry(creationDate, expiryDate);
+        this.setFragile(false);
+        this.setSellable(true);
     }
 
     public double getWeight() {
@@ -41,11 +45,12 @@ public class GroceryItems extends InventoryManager {
             System.out.println("------ PRINTING GROCERY INVENTORY INFORMATION ------");
             this.getInventory().forEach((id, item) -> {
                 System.out.println("ID: " + id +
-                " Name: " + item.getName() +
-                " Discount: " + item.getDiscount() +
-                " Price (after discount): " + item.getPrice() +
-                " Weight: " + this.getWeight() +
-                " Calories: " + this.getCalories());
+                "| Name: " + item.getName() +
+                "| Discount: " + item.getDiscount() +
+                "| Price (after discount): " + item.getPrice() +
+                "| Weight: " + this.getWeight() +
+                "| Calories: " + this.getCalories() +
+                "| Creation and Expiry date: " + this.getCreationDate() + " -> " + this.getExpiryDate());
             });
             System.out.println("> Total Items: " + this.getInventory().size());
             System.out.println("-------------------------------------------");
