@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
     @Override
-    public TreeMap<Integer, ClothingItems> loadFromCVS(String filename) {
+    public TreeMap<String, ClothingItems> loadFromCVS(String filename) {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [ClothesItemsHandler, loadFromCVS()]. ");
 
@@ -22,13 +22,13 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
             System.out.println("[ Clothes.cvs created -> ClothesItemsHandler, loadFromCVS()]");
         }
 
-        TreeMap<Integer, ClothingItems> items = new TreeMap<>();
+        TreeMap<String, ClothingItems> items = new TreeMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
 
             while((line = reader.readLine()) != null) {
                 String []components = line.split("|");
-                int id = Integer.parseInt(components[0]);
+                String id = components[0];
                 String name = components[1];
                 double price = Double.parseDouble(components[2]);
                 double discount = Double.parseDouble(components[3]);
@@ -50,7 +50,7 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
     }
 
     @Override
-    public void saveToCVS(String filename, TreeMap<Integer, ClothingItems> items) {
+    public void saveToCVS(String filename, TreeMap<String, ClothingItems> items) {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [ClothesItemsHandler, saveToCVS()]. ");
 
@@ -88,7 +88,7 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [ClothesItemsHandler, removeFromCVS()]. ");
 
-        TreeMap<Integer, ClothingItems> items = loadFromCVS(filename);
+        TreeMap<String, ClothingItems> items = loadFromCVS(filename);
         if(items.containsKey(id)) {
             items.remove(id);
             saveToCVS(filename, items);

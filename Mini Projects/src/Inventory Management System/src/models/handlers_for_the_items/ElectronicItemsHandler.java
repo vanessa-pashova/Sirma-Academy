@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicItems> {
     @Override
-    public TreeMap<Integer, ElectronicItems> loadFromCVS(String filename) {
+    public TreeMap<String, ElectronicItems> loadFromCVS(String filename) {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, loadFromCVS()]");
 
@@ -22,13 +22,13 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
             System.out.println("[ Electronics.cvs created -> ElectronicItemsHandler, loadFromCVS()]");
         }
 
-        TreeMap<Integer, ElectronicItems> items = new TreeMap<>();
+        TreeMap<String, ElectronicItems> items = new TreeMap<>();
         try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
 
             while((reader.readLine()) != null) {
                 String []components = line.split("|");
-                int id = Integer.parseInt(components[0]);
+                String id = components[0];
                 String name = components[1];
                 double price = Double.parseDouble(components[2]);
                 double discount = Double.parseDouble(components[3]);
@@ -48,7 +48,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
     }
 
     @Override
-    public void saveToCVS(String filename, TreeMap<Integer, ElectronicItems> items) {
+    public void saveToCVS(String filename, TreeMap<String, ElectronicItems> items) {
         if (filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, saveToCVS()].");
 
@@ -86,7 +86,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
         if (filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, removeFromCVS()].");
 
-        TreeMap<Integer, ElectronicItems> items = loadFromCVS(filename);
+        TreeMap<String, ElectronicItems> items = loadFromCVS(filename);
         if (items.containsKey(id)) {
             items.remove(id);
             this.saveToCVS(filename, items);

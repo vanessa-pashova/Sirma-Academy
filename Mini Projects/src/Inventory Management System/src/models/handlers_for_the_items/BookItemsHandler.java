@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public abstract class BookItemsHandler implements CVSHandler<BookItems> {
     @Override
-    public TreeMap<Integer, BookItems> loadFromCVS(String filename) {
+    public TreeMap<String, BookItems> loadFromCVS(String filename) {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [BookItemsHandler, loadFromCVS().");
 
@@ -22,13 +22,13 @@ public abstract class BookItemsHandler implements CVSHandler<BookItems> {
             System.out.println("[ Books.cvs created -> BookItemsHandler, loadFromCVS()]");
         }
 
-        TreeMap<Integer, BookItems> items = new TreeMap<>();
+        TreeMap<String, BookItems> items = new TreeMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
 
             while((line = reader.readLine()) != null) {
                 String []components = line.split("|");
-                int id = Integer.parseInt(components[0]);
+                String id = components[0];
                 String name = components[1];
                 double price = Double.parseDouble(components[2]);
                 double discount = Double.parseDouble(components[3]);
@@ -50,7 +50,7 @@ public abstract class BookItemsHandler implements CVSHandler<BookItems> {
     }
 
     @Override
-    public void saveToCVS(String filename, TreeMap<Integer, BookItems> items) {
+    public void saveToCVS(String filename, TreeMap<String, BookItems> items) {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [BookItemsHandler, saveToCVS()]. ");
 
@@ -88,7 +88,7 @@ public abstract class BookItemsHandler implements CVSHandler<BookItems> {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! Filename cannot be null or empty, [BookItemsHandler, removeFromCVS()]. ");
 
-        TreeMap<Integer, BookItems> items = loadFromCVS(filename);
+        TreeMap<String, BookItems> items = loadFromCVS(filename);
         if(items.containsKey(id)) {
             items.remove(id);
             saveToCVS(filename, items);
