@@ -1,6 +1,8 @@
 package models.items;
 
-public class BookItems extends InventoryManager {
+import models.interfaces.AbstractItem;
+
+public class BookItems extends AbstractItem {
     enum Genre {
         FANTASY,
         SCIENCE_FICTION,
@@ -52,6 +54,7 @@ public class BookItems extends InventoryManager {
             case "MYSTERY" -> this.genre = Genre.MYSTERY;
             case "NON_FICTION" -> this.genre = Genre.NON_FICTION;
             case "BIOGRAPHY" -> this.genre = Genre.BIOGRAPHY;
+            default -> throw new IllegalArgumentException(">! Invalid genre [" + genre + "].");
         }
     }
 
@@ -79,23 +82,12 @@ public class BookItems extends InventoryManager {
 
     @Override
     public void printDetails() {
-        if (this.getInventory().isEmpty())
-            System.out.println("------ BOOK INVENTORY'S EMPTY, NOTHING TO SHOW ------");
-
-        else {
-            System.out.println("------ PRINTING BOOK INVENTORY INFORMATION ------");
-            this.getInventory().forEach((id, item) -> {
-                System.out.println("ID: " + id +
-                        "| Name: " + item.getName() +
-                        "| Author: " + this.getAuthor() +
-                        "| Genre: " + this.getGenre() +
-                        "| Pages: " + this.getTotalPages() +
-                        "| Publisher: " + this.getPublisher() +
-                        "| Discount: " + item.getDiscount() +
-                        "| Price (after discount): " + item.getPrice());
-            });
-            System.out.println("> Total Books: " + this.getInventory().size());
-            System.out.println("-------------------------------------------");
-        }
+        System.out.println("Name: " + this.getName() +
+                " | Author: " + this.getAuthor() +
+                " | Genre: " + this.getGenre() +
+                " | Pages: " + this.getTotalPages() +
+                " | Publisher: " + this.getPublisher() +
+                " | Discount: " + this.getDiscount() +
+                " | Price (after discount): " + this.getPrice());
     }
 }

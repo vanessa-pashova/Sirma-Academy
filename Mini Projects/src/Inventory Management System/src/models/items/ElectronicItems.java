@@ -1,6 +1,8 @@
 package models.items;
 
-public class ElectronicItems extends InventoryManager {
+import models.interfaces.AbstractItem;
+
+public class ElectronicItems extends AbstractItem {
     enum Company {
         APPLE,
         PHILIPS,
@@ -37,14 +39,15 @@ public class ElectronicItems extends InventoryManager {
             case "APPLE" -> this.brand = Company.APPLE;
             case "PHILIPS" -> this.brand = Company.PHILIPS;
             case "SAMSUNG" -> this.brand = Company.SAMSUNG;
+            default -> throw new IllegalStateException(">! Invalid brand: " + brand + "[ElectronicItems, setBrand()].");
         }
     }
 
     public void setWarrantyPeriod(int warrantyPeriod) {
-        if(warrantyPeriod < 0)
+        if (warrantyPeriod < 0)
             throw new IllegalArgumentException(">! Warranty period cannot be negative, [ElectronicItems, setWarrantyPeriod].");
 
-        else if(0 <= warrantyPeriod && warrantyPeriod <= 36)    //warranty value == months
+        else if (0 <= warrantyPeriod && warrantyPeriod <= 36)    //warranty value == months
             this.warrantyPeriod = warrantyPeriod;
 
         else
@@ -53,23 +56,12 @@ public class ElectronicItems extends InventoryManager {
 
     @Override
     public void printDetails() {
-        if(this.getInventory().isEmpty())
-            System.out.println("------ ELECTRONIC INVENTORY'S EMPTY, NOTHING TO SHOW ------");
-
-        else {
-            System.out.println("------ PRINTING ELECTRONIC INVENTORY INFORMATION ------");
-            this.getInventory().forEach((id, item) -> {
-                System.out.println("ID: " + id +
-                        "| Name: " + item.getName() +
-                        "| Discount: " + item.calculatePrice() +
-                        "| Price (after discount: " + item.getPrice() +
-                        "| Brand: " + this.brand +
-                        "| Warranty Period: " + this.getWarrantyPeriod() +
-                        "| Category: " + item.getCategory() +
-                        "| Details: " + item.getItemDetails());
-            });
-            System.out.println("> Total Items: " + this.getInventory().size());
-            System.out.println("-------------------------------------------");
-        }
+        System.out.println("Name: " + this.getName() +
+                " | Discount: " + this.calculatePrice() +
+                " | Price (after discount: " + this.getPrice() +
+                " | Brand: " + this.brand +
+                " | Warranty Period: " + this.getWarrantyPeriod() +
+                " | Category: " + this.getCategory() +
+                " | Details: " + this.getItemDetails());
     }
 }
