@@ -3,12 +3,12 @@ package models.items;
 import models.interfaces.AbstractItem;
 
 public class BookItems extends AbstractItem {
-    enum Genre {
+    public enum Genre {     //public only for the tests - they all passed
         FANTASY,
         SCIENCE_FICTION,
         MYSTERY,
         NON_FICTION,
-        BIOGRAPHY;
+        BIOGRAPHY
     }
 
     private String author;
@@ -21,8 +21,8 @@ public class BookItems extends AbstractItem {
         return "B-" + (bookIDCounter++);
     }
 
-    public BookItems(String name, double price, double discount, String author, String genre, int totalPages, String publisher, String description) {
-        super(name, price, CategorizableType.BOOKS, discount);
+    public BookItems(String name, double discount, double price,  String author, String genre, int totalPages, String publisher, String description) {
+        super(name, discount, price, CategorizableType.BOOKS);
         this.setAuthor(author);
         this.setGenre(genre);
         this.setTotalPages(totalPages);
@@ -48,7 +48,7 @@ public class BookItems extends AbstractItem {
     }
 
     public void setGenre(String genre) {
-        switch (genre.toLowerCase()) {
+        switch (genre.toUpperCase()) {
             case "FANTASY" -> this.genre = Genre.FANTASY;
             case "SCIENCE_FICTION" -> this.genre = Genre.SCIENCE_FICTION;
             case "MYSTERY" -> this.genre = Genre.MYSTERY;

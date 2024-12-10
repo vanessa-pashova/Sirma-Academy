@@ -11,8 +11,8 @@ public class GroceryItems extends AbstractItem {
         return "G-" + (groceryIDCounter++);
     }
 
-    public GroceryItems(String name, double price, double discount, String description, double weight, int calories, String creationDate, String expiryDate) {
-        super(name, price, CategorizableType.GROCERIES, discount);
+    public GroceryItems(String name, double discount, double price, String description, double weight, int calories, String creationDate, String expiryDate) {
+        super(name, discount, price, CategorizableType.GROCERIES);
         this.setWeight(weight);
         this.setCalories(calories);
         this.setItemDescription(description);

@@ -3,7 +3,7 @@ package models.items;
 import models.interfaces.AbstractItem;
 
 public class ElectronicItems extends AbstractItem {
-    enum Company {
+    public enum Company {   //public only for the tests
         APPLE,
         PHILIPS,
         SAMSUNG;
@@ -17,8 +17,8 @@ public class ElectronicItems extends AbstractItem {
         return "E-" + (electronicIDCounter++);
     }
 
-    public ElectronicItems(String name, double price, String brand, int warrantyPeriod, double discount, String details) {
-        super(name, price, CategorizableType.ELECTRONICS, discount);
+    public ElectronicItems(String name, double discount, double price, String brand, int warrantyPeriod,  String details) {
+        super(name, discount, price, CategorizableType.ELECTRONICS);
         this.setBrand(brand);
         this.setWarrantyPeriod(warrantyPeriod);
         this.setFragile(true);

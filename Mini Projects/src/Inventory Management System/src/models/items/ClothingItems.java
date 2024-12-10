@@ -3,14 +3,14 @@ package models.items;
 import models.interfaces.AbstractItem;
 
 public class ClothingItems extends AbstractItem {
-    enum ClothesCategory {
+    public enum ClothesCategory {
         TSHIRTS,
         JEANS,
         JACKETS,
         SHOES;
     }
 
-    enum Brands {
+    public enum Brands {
         NIKE,
         TOMMY_HILFIGER,
         ZARA;
@@ -26,9 +26,8 @@ public class ClothingItems extends AbstractItem {
         return "C-" + (clothingIDCounter++);
     }
 
-    public ClothingItems(String nameOfItem, double price, double discount, String brand, String size, String color, String details) {
-        this.setName(nameOfItem);
-        this.setPrice(price);
+    public ClothingItems(String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
+        super(nameOfItem, discount, price, CategorizableType.CLOTHING);
         this.setBrand(brand);
         this.setSize(size);
         this.setColor(color);

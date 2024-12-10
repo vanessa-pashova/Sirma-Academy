@@ -12,8 +12,8 @@ public class InventoryManager extends AbstractItem {
         this.inventory = new TreeMap<>();
     }
 
-    public InventoryManager(String name, double price, CategorizableType category, double discount) {
-        super(name, price, category, discount);
+    public InventoryManager(String name, double discount, double price, CategorizableType category) {
+        super(name, discount, price, category);
         this.inventory = new TreeMap<>();
     }
 
