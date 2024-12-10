@@ -18,11 +18,11 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     protected String itemDetails;
     protected String itemDescription;
 
-    public AbstractItem(String name, double price, CategorizableType category, double discount) {
+    public AbstractItem(String name, double discount, double price, CategorizableType category) {
         this.setName(name);
+        this.setDiscount(discount);
         this.setPrice(price);
         this.setCategory(category);
-        this.setDiscount(discount);
     }
 
     public AbstractItem() {
@@ -38,6 +38,11 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     }
 
     @Override
+    public double getDiscount() {
+        return this.itemDiscount;
+    }
+
+    @Override
     public double getPrice() {
         return this.itemPrice;
     }
@@ -45,11 +50,6 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     @Override
     public CategorizableType getCategory() {
         return this.category;
-    }
-
-    @Override
-    public double getDiscount() {
-        return this.itemDiscount;
     }
 
     @Override
@@ -92,11 +92,26 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     }
 
     @Override
+    public void setDiscount(double discount) {
+        if(discount < 0.0){
+            this.itemDiscount = 0;
+            throw new IllegalStateException(">! Discount cannot be less than 0%. [AbstactItem, setDiscount()].");
+        }
+
+        if(discount >= 1.0) {
+            this.itemDiscount = 0;
+            throw new IllegalStateException(">! Discount cannot be greater than 100%. [AbstactItem, setDiscount()].");
+        }
+
+        this.itemDiscount = discount;
+    }
+
+    @Override
     public void setPrice(double itemPrice) {
-        if(itemPrice < 0.10)
+        if(itemPrice <= 0)
             throw new IllegalStateException(">! Price cannot be less than 0.10 [AbstactItem, setPrice()].");
 
-        if(itemDiscount == 0) {
+        if(this.itemDiscount == 0) {
             System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
             this.itemPrice = itemPrice;
         }
@@ -104,7 +119,10 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         else {
             System.out.println("[ Price before discount: " + itemPrice + " ]");
             System.out.println("------- ITEM DISCOUNT APPLIED ------");
+            this.itemPrice = itemPrice;
             this.itemPrice = calculatePrice();
+            System.out.println("[ Price after discount: " + this.itemPrice + " ]");
+            System.out.println();
         }
     }
 
@@ -114,21 +132,6 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
             throw new IllegalStateException(">! Category cannot be empty [AbstactItem, setCategory()].");
 
         this.category = category;
-    }
-
-    @Override
-    public void setDiscount(double discount) {
-        if(discount <= 0){
-            this.itemDiscount = 0;
-            return;
-        }
-
-        if(discount >= 1) {
-            this.itemDiscount = 0;
-            throw new IllegalStateException(">! Discount cannot be greater than 100%. [AbstactItem, setDiscount()].");
-        }
-
-        this.itemDiscount = discount;
     }
 
     @Override
@@ -171,20 +174,22 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         if(itemDetails == null || itemDetails.isEmpty())
             this.itemDetails = "[ No details for this item were provided ]\n";
 
-        this.itemDetails = itemDetails.toUpperCase();
+        else
+            this.itemDetails = itemDetails;
     }
 
     @Override
     public void setItemDescription(String itemDescription) {
         if(itemDescription == null || itemDescription.isEmpty())
-            this.itemDescription = "[ No details for this item were provided ]\n";
+            this.itemDescription = "[ No description for this item was provided ]\n";
 
-        this.itemDescription = itemDescription.toUpperCase();
+        else
+            this.itemDescription = itemDescription;
     }
 
     @Override
     public double calculatePrice() {
-        return this.itemPrice * (1 - this.itemDiscount);
+        return this.itemPrice = Math.round(this.itemPrice * (1 - this.itemDiscount) * 100.0) / 100.0;
     }
 
     @Override
