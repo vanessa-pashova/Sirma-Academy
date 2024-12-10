@@ -5,18 +5,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class AbstractItem implements Item, Categorizable, Fragile, Perishable, Sellable, Discount, Printable {
-    private String itemName;
-    private double itemPrice;
-    private CategorizableType category;
+    protected String itemName;
+    protected double itemPrice;
+    protected CategorizableType category;
 
-    private double itemDiscount;
+    protected double itemDiscount;
 
-    private boolean fragile;
-    private String creationDate, expirationDate;
-    private boolean sellable;
+    protected boolean fragile;
+    protected String creationDate, expirationDate;
+    protected boolean sellable;
 
-    private String itemDetails;
-    private String itemDescription;
+    protected String itemDetails;
+    protected String itemDescription;
 
     public AbstractItem(String name, double price, CategorizableType category, double discount) {
         this.setName(name);
@@ -184,7 +184,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
 
     @Override
     public double calculatePrice() {
-        return this.itemPrice -= (this.itemPrice * itemDiscount);
+        return this.itemPrice * (1 - this.itemDiscount);
     }
 
     @Override
