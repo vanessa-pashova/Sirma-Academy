@@ -42,7 +42,7 @@ public class InventoryManager extends AbstractItem {
     }
 
     private String getFilePathForItem(AbstractItem item) {
-        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/cvsFiles/items/";
+        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csvFiles/items/";
 
         if (item instanceof BookItems)
             return pathToDir + "Books.csv";
@@ -61,20 +61,20 @@ public class InventoryManager extends AbstractItem {
 
     public void loadInventory() {
         BookItemsHandler bookHandler = new BookItemsHandler() {};
-        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/cvsFiles/items/";
-        TreeMap<String, BookItems> books = bookHandler.loadFromCVS(pathToDir + "Books.csv");
+        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csvFiles/items/";
+        TreeMap<String, BookItems> books = bookHandler.loadFromCSV(pathToDir + "Books.csv");
         this.inventory.putAll(books);
 
         ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
-        TreeMap<String, ClothingItems> clothings = clothesHandler.loadFromCVS(pathToDir + "Clothes.csv");
+        TreeMap<String, ClothingItems> clothings = clothesHandler.loadFromCSV(pathToDir + "Clothes.csv");
         this.inventory.putAll(clothings);
 
         ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
-        TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCVS(pathToDir + "Electronics.csv");
+        TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCSV(pathToDir + "Electronics.csv");
         this.inventory.putAll(electronics);
 
         GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
-        TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCVS(pathToDir + "Groceries.csv");
+        TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCSV(pathToDir + "Groceries.csv");
         this.inventory.putAll(groceries);
     }
 
@@ -89,30 +89,30 @@ public class InventoryManager extends AbstractItem {
 
         if (item instanceof BookItems) {
             BookItemsHandler bookHandler = new BookItemsHandler() {};
-            TreeMap<String, BookItems> books = bookHandler.loadFromCVS(filePath);
+            TreeMap<String, BookItems> books = bookHandler.loadFromCSV(filePath);
             books.put(id, (BookItems) item);
-            bookHandler.saveToCVS(filePath, books);
+            bookHandler.saveToCSV(filePath, books);
         }
 
         else if (item instanceof ClothingItems) {
             ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
-            TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCVS(filePath);
+            TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCSV(filePath);
             clothes.put(id, (ClothingItems) item);
-            clothesHandler.saveToCVS(filePath, clothes);
+            clothesHandler.saveToCSV(filePath, clothes);
         }
 
         else if (item instanceof ElectronicItems) {
             ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
-            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCVS(filePath);
+            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCSV(filePath);
             electronics.put(id, (ElectronicItems) item);
-            electronicHandler.saveToCVS(filePath, electronics);
+            electronicHandler.saveToCSV(filePath, electronics);
         }
 
         else if (item instanceof GroceryItems) {
             GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
-            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCVS(filePath);
+            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCSV(filePath);
             groceries.put(id, (GroceryItems) item);
-            groceryHandler.saveToCVS(filePath, groceries);
+            groceryHandler.saveToCSV(filePath, groceries);
         }
     }
 
@@ -127,30 +127,26 @@ public class InventoryManager extends AbstractItem {
 
         if (item instanceof BookItems) {
             BookItemsHandler bookHandler = new BookItemsHandler() {};
-            TreeMap<String, BookItems> books = bookHandler.loadFromCVS(filePath);
-            books.remove(id);
-            bookHandler.saveToCVS(filePath, books);
+            TreeMap<String, BookItems> books = bookHandler.loadFromCSV(filePath);
+            bookHandler.removeFromCSV(filePath, id);
         }
 
         else if (item instanceof ClothingItems) {
             ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
-            TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCVS(filePath);
-            clothes.remove(id);
-            clothesHandler.saveToCVS(filePath, clothes);
+            TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCSV(filePath);
+            clothesHandler.removeFromCSV(filePath, id);
         }
 
         else if (item instanceof ElectronicItems) {
             ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
-            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCVS(filePath);
-            electronics.remove(id);
-            electronicHandler.saveToCVS(filePath, electronics);
+            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCSV(filePath);
+            electronicHandler.removeFromCSV(filePath, id);
         }
 
         else if (item instanceof GroceryItems) {
             GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
-            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCVS(filePath);
-            groceries.remove(id);
-            groceryHandler.saveToCVS(filePath, groceries);
+            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCSV(filePath);
+            groceryHandler.removeFromCSV(filePath, id);
         }
     }
 

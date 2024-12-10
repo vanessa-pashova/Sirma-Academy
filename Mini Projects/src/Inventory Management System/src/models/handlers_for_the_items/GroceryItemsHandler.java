@@ -5,21 +5,21 @@ import models.items.GroceryItems;
 import java.io.*;
 import java.util.TreeMap;
 
-public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
+public abstract class GroceryItemsHandler implements CSVHandler<GroceryItems> {
     @Override
-    public TreeMap<String, GroceryItems> loadFromCVS(String filename) {
+    public TreeMap<String, GroceryItems> loadFromCSV(String filename) {
         if(filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, loadFromCVS()]. ");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, loadFromCSV()]. ");
 
         File file = new File(filename);
         if(!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.out.print(">! Error while creating a loading file Groceries.cvs, [GroceryItemsHandler, loadFromCVS()].");
+                System.out.print(">! Error while creating a loading file Groceries.csv, [GroceryItemsHandler, loadFromCSV()].");
                 System.out.println(e.getMessage());
             }
-            System.out.println("[ Groceries.cvs created -> GroceryItemsHandler, loadFromCVS()]");
+            System.out.println("[ Groceries.csv created -> GroceryItemsHandler, loadFromCSV()]");
         }
 
         TreeMap<String, GroceryItems> items = new TreeMap<>();
@@ -42,7 +42,7 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
                 items.put(id, item);
             }
         } catch (IOException e) {
-            System.out.print(">! Error while loading Groceries.cvs, [GroceryItemsHandler, loadFromCVS()]. ");
+            System.out.print(">! Error while loading Groceries.csv, [GroceryItemsHandler, loadFromCSV()]. ");
             System.out.println(e.getMessage());
         }
 
@@ -50,9 +50,9 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
     }
 
     @Override
-    public void saveToCVS(String filename, TreeMap<String, GroceryItems> items) {
+    public void saveToCSV(String filename, TreeMap<String, GroceryItems> items) {
         if(filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, saveToCVS()]. ");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, saveToCSV()]. ");
 
         File file = new File(filename);
         if(!file.exists()) {
@@ -62,7 +62,7 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
                 writer.write("ID|Name|Price|Discount|Description|Weight|Calories|CreationDate|ExpiryDate");
                 writer.newLine();
             } catch (IOException e) {
-                System.out.print(">! Error while creating Groceries.cvs file, [GroceryItemsHandler, saveToCVS()]. ");
+                System.out.print(">! Error while creating Groceries.csv file, [GroceryItemsHandler, saveToCSV()]. ");
                 System.out.println(e.getMessage());
             }
         }
@@ -73,28 +73,28 @@ public abstract class GroceryItemsHandler implements CVSHandler<GroceryItems> {
                     writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getItemDescription() + "|" + item.getWeight() + "|" + item.getCalories() + "|" + item.getCreationDate() + "|" + item.getExpiryDate());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving Groceries.cvs. [GroceryItemsHandler, saveToCVS()]. ");
+                    System.out.print(">! Error while saving Groceries.csv. [GroceryItemsHandler, saveToCSV()]. ");
                     System.out.println(e.getMessage());
                 }
             });
         } catch (IOException e) {
-            System.out.print(">! Error while writing Groceries.cvs file, [GroceryItemsHandler, saveToCVS()]. ");
+            System.out.print(">! Error while writing Groceries.csv file, [GroceryItemsHandler, saveToCSV()]. ");
             System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void removeFromCVS(String filename, int id) {
+    public void removeFromCSV(String filename, String id) {
         if(filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, removeFromCVS()]. ");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [GroceryItemsHandler, removeFromCSV()]. ");
 
-        TreeMap<String, GroceryItems> items = loadFromCVS(filename);
+        TreeMap<String, GroceryItems> items = loadFromCSV(filename);
         if(items.containsKey(id)) {
             items.remove(id);
-            saveToCVS(filename, items);
+            saveToCSV(filename, items);
         }
 
         else
-            throw new IllegalArgumentException(">! Item does not exist, [GroceryItemsHandler, removeFromCVS()]. ");
+            throw new IllegalArgumentException(">! Item does not exist, [GroceryItemsHandler, removeFromCSV()]. ");
     }
 }

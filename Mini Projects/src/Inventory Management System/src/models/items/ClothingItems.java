@@ -53,17 +53,14 @@ public class ClothingItems extends InventoryManager {
         if (name.toUpperCase().equals("TSHIRTS") || name.toUpperCase().equals("T-SHIRTS"))
             this.clothesCategory = ClothesCategory.TSHIRTS;
 
-        else if(name.toUpperCase().equals("JEANS")) {
+        else if(name.toUpperCase().equals("JEANS"))
             this.clothesCategory = ClothesCategory.JEANS;
-        }
 
-        else if(name.toUpperCase().equals("JACKETS")) {
+        else if(name.toUpperCase().equals("JACKETS"))
             this.clothesCategory = ClothesCategory.JACKETS;
-        }
 
-        else if(name.toUpperCase().equals("SHOES")) {
+        else if(name.toUpperCase().equals("SHOES"))
             this.clothesCategory = ClothesCategory.SHOES;
-        }
 
         else
             throw new IllegalArgumentException(">! Invalid name of clothing item, [ClothingItems, setName()].");

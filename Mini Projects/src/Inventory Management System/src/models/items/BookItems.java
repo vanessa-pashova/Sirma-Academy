@@ -35,9 +35,9 @@ public class BookItems extends InventoryManager {
     }
 
     public void setAuthor(String author) {
-        if (author == null || author.isEmpty()) {
+        if (author == null || author.isEmpty())
             throw new IllegalArgumentException(">! Author name cannot be empty [BookItems, setAuthor()].");
-        }
+
         this.author = author;
     }
 
@@ -79,9 +79,10 @@ public class BookItems extends InventoryManager {
 
     @Override
     public void printDetails() {
-        if (this.getInventory().isEmpty()) {
+        if (this.getInventory().isEmpty())
             System.out.println("------ BOOK INVENTORY'S EMPTY, NOTHING TO SHOW ------");
-        } else {
+
+        else {
             System.out.println("------ PRINTING BOOK INVENTORY INFORMATION ------");
             this.getInventory().forEach((id, item) -> {
                 System.out.println("ID: " + id +

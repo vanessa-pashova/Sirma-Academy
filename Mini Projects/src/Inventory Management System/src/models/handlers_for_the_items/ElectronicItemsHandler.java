@@ -5,21 +5,21 @@ import models.items.ElectronicItems;
 import java.io.*;
 import java.util.TreeMap;
 
-public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicItems> {
+public abstract class ElectronicItemsHandler implements CSVHandler<ElectronicItems> {
     @Override
-    public TreeMap<String, ElectronicItems> loadFromCVS(String filename) {
+    public TreeMap<String, ElectronicItems> loadFromCSV(String filename) {
         if(filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, loadFromCVS()]");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, loadFromCSV()]");
 
         File file = new File(filename);
         if(!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.out.print(">! Error while creating a loading file Electronics.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
+                System.out.print(">! Error while creating a loading file Electronics.csv, [ElectronicItemsHandler, loadFromCSV()]. ");
                 System.out.println(e.getMessage());
             }
-            System.out.println("[ Electronics.cvs created -> ElectronicItemsHandler, loadFromCVS()]");
+            System.out.println("[ Electronics.csv created -> ElectronicItemsHandler, loadFromCSV()]");
         }
 
         TreeMap<String, ElectronicItems> items = new TreeMap<>();
@@ -40,7 +40,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                 items.put(id, item);
             }
         } catch (IOException e) {
-            System.out.print(">! Error while loading Electronics.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
+            System.out.print(">! Error while loading Electronics.csv, [ElectronicItemsHandler, loadFromCSV()]. ");
             System.out.println(e.getMessage());
         }
 
@@ -48,9 +48,9 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
     }
 
     @Override
-    public void saveToCVS(String filename, TreeMap<String, ElectronicItems> items) {
+    public void saveToCSV(String filename, TreeMap<String, ElectronicItems> items) {
         if (filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, saveToCVS()].");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, saveToCSV()].");
 
         File file = new File(filename);
         if (!file.exists()) {
@@ -60,7 +60,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                 writer.write("ID|Name|Price|Discount|Brand|Warranty|Details");
                 writer.newLine();
             } catch (IOException e) {
-                System.out.print(">! Error while creating Electronics.cvs, [ElectronicItemsHandler, saveToCVS()]. ");
+                System.out.print(">! Error while creating Electronics.csv, [ElectronicItemsHandler, saveToCSV()]. ");
                 System.out.println(e.getMessage());
             }
         }
@@ -71,28 +71,28 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                     writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getBrand() + "|" + item.getWarrantyPeriod());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving items in Electronics.cvs, [ElectronicItemsHandler, saveToCVS()]. ");
+                    System.out.print(">! Error while saving items in Electronics.csv, [ElectronicItemsHandler, saveToCSV()]. ");
                     System.out.println(e.getMessage());
                 }
             });
         } catch (IOException e) {
-            System.out.print(">! Error while saving Electronics.cvs, [ElectronicItemsHandler, saveToCVS()]. ");
+            System.out.print(">! Error while saving Electronics.csv, [ElectronicItemsHandler, saveToCSV()]. ");
             System.out.println(e.getMessage());
         }
     }
 
     @Override
-    public void removeFromCVS(String filename, int id) {
+    public void removeFromCSV(String filename, String id) {
         if (filename == null || filename.isEmpty())
-            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, removeFromCVS()].");
+            throw new IllegalArgumentException(">! Filename cannot be null or empty, [ElectronicItemsHandler, removeFromCSV()].");
 
-        TreeMap<String, ElectronicItems> items = loadFromCVS(filename);
+        TreeMap<String, ElectronicItems> items = loadFromCSV(filename);
         if (items.containsKey(id)) {
             items.remove(id);
-            this.saveToCVS(filename, items);
+            this.saveToCSV(filename, items);
         }
 
         else
-            throw new IllegalArgumentException(">! Item does not exist, [ElectronicItemsHandler, removeFromCVS()].");
+            throw new IllegalArgumentException(">! Item does not exist, [ElectronicItemsHandler, removeFromCSV()].");
     }
 }
