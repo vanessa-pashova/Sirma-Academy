@@ -19,7 +19,7 @@ public abstract class ElectronicItemsHandler implements CVSHandler<ElectronicIte
                 System.out.print(">! Error while creating a loading file Clothes.cvs, [ElectronicItemsHandler, loadFromCVS()]. ");
                 System.out.println(e.getMessage());
             }
-            throw new IllegalArgumentException(">! File does not exist, [ElectronicItemsHandler, loadFromCVS()].");
+//            throw new IllegalArgumentException(">! File does not exist, [ElectronicItemsHandler, loadFromCVS()].");
         }
 
         TreeMap<Integer, ElectronicItems> items = new TreeMap<>();

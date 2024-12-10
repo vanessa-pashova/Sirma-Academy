@@ -1,6 +1,5 @@
 package models.input_output;
 
-import com.sun.source.tree.Tree;
 import models.items.ClothingItems;
 
 import java.io.*;
@@ -20,7 +19,7 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
                 System.out.print(">! Error while creating a loading file Clothes.cvs, [ClothesItemsHandler, loadFromCVS()]. ");
                 System.out.println(e.getMessage());
             }
-            throw new IllegalArgumentException(">! File does not exist but will be created [ClothesItemsHandler, loadFromCVS()]. ");
+            System.out.println("[ Books.cvs created -> ClothesItemsHandler, loadFromCVS()]");
         }
 
         TreeMap<Integer, ClothingItems> items = new TreeMap<>();
@@ -74,12 +73,13 @@ public abstract class ClothesItemsHandler implements CVSHandler<ClothingItems> {
                     writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getCategory() + "|" + item.getBrand() + "|" + item.getSize() + "|" + item.getColor() + "|" + item.getItemDetails());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving items in Electronics CVS file. [ClothesItemsHandler, saveToCVS()]. ");
+                    System.out.print(">! Error while saving Clothes.cvs. [ClothesItemsHandler, saveToCVS()]. ");
                     System.out.println(e.getMessage());
                 }
             });
         } catch (IOException e) {
             System.out.print(">! Error while writing Clothes.cvs file, [ClothesItemsHandler, saveToCVS()]. ");
+            System.out.println(e.getMessage());
         }
     }
 
