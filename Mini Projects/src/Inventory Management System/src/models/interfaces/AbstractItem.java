@@ -4,7 +4,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public abstract class AbstractItem implements Item, Categorizable, Fragile, Perishable, Sellable, Discount {
+public abstract class AbstractItem implements Item, Categorizable, Fragile, Perishable, Sellable, Discount, Printable {
     private String itemName;
     private double itemPrice;
     private CategorizableType category;
@@ -173,6 +173,9 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     public double calculatePrice() {
         return this.itemPrice -= (this.itemPrice * itemDiscount);
     }
+
+    @Override
+    public abstract void printDetails();
 
     public AbstractItem(String name, double price, CategorizableType category, double discount) {
         this.setName(name);
