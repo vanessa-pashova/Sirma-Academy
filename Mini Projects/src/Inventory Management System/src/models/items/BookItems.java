@@ -1,8 +1,16 @@
 package models.items;
 
 public class BookItems extends InventoryManager {
+    enum Genre {
+        FANTASY,
+        SCIENCE_FICTION,
+        MYSTERY,
+        NON_FICTION,
+        BIOGRAPHY;
+    }
+
     private String author;
-    private String genre;      //can make it enum
+    private Genre genre;
     private int totalPages;
     private String publisher;
 
@@ -28,15 +36,18 @@ public class BookItems extends InventoryManager {
         this.author = author;
     }
 
-    public String getGenre() {
-        return genre;
+    public Genre getGenre() {
+        return this.genre;
     }
 
     public void setGenre(String genre) {
-        if (genre == null || genre.isEmpty())
-            throw new IllegalArgumentException(">! Genre cannot be empty [BookItems, setGenre()].");
-
-        this.genre = genre;
+        switch (genre.toLowerCase()) {
+            case "FANTASY" -> this.genre = Genre.FANTASY;
+            case "SCIENCE_FICTION" -> this.genre = Genre.SCIENCE_FICTION;
+            case "MYSTERY" -> this.genre = Genre.MYSTERY;
+            case "NON_FICTION" -> this.genre = Genre.NON_FICTION;
+            case "BIOGRAPHY" -> this.genre = Genre.BIOGRAPHY;
+        }
     }
 
     public int getTotalPages() {
