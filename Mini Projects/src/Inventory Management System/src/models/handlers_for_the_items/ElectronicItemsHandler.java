@@ -5,7 +5,7 @@ import models.items.ElectronicItems;
 import java.io.*;
 import java.util.TreeMap;
 
-public abstract class ElectronicItemsHandler implements CSVHandler<ElectronicItems> {
+public abstract class ElectronicItemsHandler extends AbstractCSVHandler<ElectronicItems> {
     @Override
     public TreeMap<String, ElectronicItems> loadFromCSV(String filename) {
         if(filename == null || filename.isEmpty())
@@ -27,7 +27,7 @@ public abstract class ElectronicItemsHandler implements CSVHandler<ElectronicIte
             String line = reader.readLine();
 
             while((reader.readLine()) != null) {
-                String []components = line.split("|");
+                String []components = line.split("\\|");
                 String id = components[0];
                 String name = components[1];
                 double price = Double.parseDouble(components[2]);
