@@ -4,7 +4,7 @@ import models.interfaces.AbstractItem;
 
 public class ClothingItems extends AbstractItem {
     public enum ClothesCategory {
-        TSHIRTS,
+        TSHIRT,
         JEANS,
         JACKETS,
         SHOES;
@@ -52,7 +52,7 @@ public class ClothingItems extends AbstractItem {
 
     public void setName(String name) {
         switch (name.toUpperCase()) {
-            case "TSHIRTS" -> this.clothesCategory = ClothesCategory.TSHIRTS;
+            case "TSHIRT" -> this.clothesCategory = ClothesCategory.TSHIRT;
             case "JEANS" -> this.clothesCategory = ClothesCategory.JEANS;
             case "JACKETS" -> this.clothesCategory = ClothesCategory.JACKETS;
             case "SHOES" -> this.clothesCategory = ClothesCategory.SHOES;
