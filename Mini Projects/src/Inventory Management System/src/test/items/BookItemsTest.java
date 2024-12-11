@@ -32,7 +32,7 @@ class BookItemsTest {
         assertEquals(BookItems.Genre.FANTASY, book.getGenre(), "Book genre does not match.");
         assertEquals(totalPages, book.getTotalPages(), "Book total pages do not match.");
         assertEquals(publisher, book.getPublisher(), "Book publisher does not match.");
-        assertEquals(description.toUpperCase(), book.getItemDescription(), "Book description does not match.");
+        assertEquals(description, book.getItemDescription(), "Book description does not match.");
     }
 
     @Test
@@ -82,7 +82,7 @@ class BookItemsTest {
         assertEquals(BookItems.Genre.BIOGRAPHY, book.getGenre(), "Genre update failed.");
         assertEquals(250, book.getTotalPages(), "Total pages update failed.");
         assertEquals("Updated Publisher", book.getPublisher(), "Publisher update failed.");
-        assertEquals("UPDATED DESCRIPTION", book.getItemDescription(), "Description update failed.");
+        assertEquals("Updated description", book.getItemDescription(), "Description update failed.");
     }
 
     @Test
@@ -245,6 +245,6 @@ class BookItemsTest {
         BookItems book = new BookItems("Large Description Book", 0.1, 20.0, "Author", "BIOGRAPHY", 400, "Publisher", largeDescription);
 
         // Assert
-        assertEquals(largeDescription.toUpperCase(), book.getItemDescription(), "Large description handling failed.");
+        assertEquals(largeDescription, book.getItemDescription(), "Large description handling failed.");
     }
 }
