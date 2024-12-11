@@ -1,7 +1,5 @@
 package models.items;
 
-import models.interfaces.AbstractItem;
-
 public class ClothingItems extends AbstractItem {
     public enum ClothesCategory {
         TSHIRT,

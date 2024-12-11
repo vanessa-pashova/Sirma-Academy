@@ -1,7 +1,5 @@
 package models.items;
 
-import models.interfaces.AbstractItem;
-
 public class BookItems extends AbstractItem {
     public enum Genre {     //public only for the tests - they all passed
         FANTASY,

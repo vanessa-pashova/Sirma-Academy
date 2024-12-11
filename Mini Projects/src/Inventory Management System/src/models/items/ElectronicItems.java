@@ -1,7 +1,5 @@
 package models.items;
 
-import models.interfaces.AbstractItem;
-
 public class ElectronicItems extends AbstractItem {
     public enum Company {   //public only for the tests
         APPLE,

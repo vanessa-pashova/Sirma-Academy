@@ -1,7 +1,5 @@
 package models.items;
 
-import models.interfaces.AbstractItem;
-
 public class GroceryItems extends AbstractItem {
     private double weight;
     private int calories;

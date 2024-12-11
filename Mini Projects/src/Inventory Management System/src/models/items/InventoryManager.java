@@ -1,7 +1,6 @@
 package models.items;
 
 import models.handlers_for_the_items.*;
-import models.interfaces.AbstractItem;
 
 import java.util.TreeMap;
 
