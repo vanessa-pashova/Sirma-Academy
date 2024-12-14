@@ -5,8 +5,7 @@ import models.items.BookItems;
 import java.io.*;
 import java.util.TreeMap;
 
-public abstract class BookItemsHandler extends AbstractCSVHandler<BookItems> {
-
+public class BookItemsHandler extends AbstractCSVHandler<BookItems> {
     @Override
     public TreeMap<String, BookItems> loadFromCSV(String filename) {
         if (filename == null || filename.isEmpty())

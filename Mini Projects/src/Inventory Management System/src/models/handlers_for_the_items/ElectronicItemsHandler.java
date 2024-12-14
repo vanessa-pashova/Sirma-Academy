@@ -5,7 +5,7 @@ import models.items.ElectronicItems;
 import java.io.*;
 import java.util.TreeMap;
 
-public abstract class ElectronicItemsHandler extends AbstractCSVHandler<ElectronicItems> {
+public class ElectronicItemsHandler extends AbstractCSVHandler<ElectronicItems> {
     @Override
     public TreeMap<String, ElectronicItems> loadFromCSV(String filename) {
         if (filename == null || filename.isEmpty())
@@ -47,7 +47,6 @@ public abstract class ElectronicItemsHandler extends AbstractCSVHandler<Electron
 
         return items;
     }
-
 
     @Override
     public void saveToCSV(String filename, TreeMap<String, ElectronicItems> items) {
