@@ -2,12 +2,12 @@ ID|Name|Price|Discount|Category|Brand|Size|Color|Details
 C-1|T-shirt|25.99|0.1|TSHIRTS|NIKE|M|Blue|100% Cotton
 C-2|Jeans|49.99|0.2|JEANS|ZARA|L|Black|Denim with 2% Elastane
 C-3|Jacket|89.50|0.15|JACKETS|TOMMY_HILFIGER|XL|Red|Polyester and Nylon Blend
-C-4|Shoes|69.99|0.1|SHOES|NIKE|42|White|Synthetic Leather and Mesh
+C-4|Shoes|69.99|0.1|SHOES|NIKE|M|White|Synthetic Leather and Mesh
 C-5|T-shirt|22.50|0.05|TSHIRTS|ZARA|S|Green|Organic Cotton
 C-6|Jeans|55.00|0.1|JEANS|TOMMY_HILFIGER|M|Blue|Stretch Denim with 5% Polyester
 C-7|Jacket|120.00|0.2|JACKETS|NIKE|L|Black|Waterproof Polyester
-C-8|Shoes|79.99|0.15|SHOES|ZARA|44|Red|Breathable Mesh and Rubber Sole
+C-8|Shoes|79.99|0.15|SHOES|ZARA|L|Red|Breathable Mesh and Rubber Sole
 C-9|T-shirt|18.99|0.05|TSHIRTS|NIKE|XS|Yellow|50% Cotton, 50% Polyester
-C-10|Jeans|60.00|0.1|JEANS|ZARA|XL|Grey|Recycled Cotton and Polyester
+C-10|Jeans|60.00|0.1|JEANS|ZARA|XL|Green|Recycled Cotton and Polyester
 C-11|Jacket|150.00|0.25|JACKETS|TOMMY_HILFIGER|M|Blue|Genuine Leather
-C-12|Shoes|90.00|0.2|SHOES|NIKE|43|Black|High-Quality Synthetic Material
+C-12|Shoes|90.00|0.2|SHOES|NIKE|S|Black|High-Quality Synthetic Material
