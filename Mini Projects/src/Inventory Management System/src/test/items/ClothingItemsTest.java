@@ -12,7 +12,7 @@ class ClothingItemsTest {
     @Test
     void testValidInitialization() {
         // Arrange
-        String name = "TSHIRTS";
+        String name = "T-SHIRT";
         double discount = 0.2;
         double price = 50.0;
         String brand = "NIKE";
@@ -26,7 +26,7 @@ class ClothingItemsTest {
         // Assert
         assertEquals(40.0, clothing.getPrice(), "Price calculation with discount failed.");
         assertEquals(ClothingItems.Brands.NIKE, clothing.getBrand(), "Brand does not match.");
-        assertEquals(ClothingItems.ClothesCategory.TSHIRTS, clothing.getClothesCategory(), "Clothing category does not match.");
+        assertEquals(ClothingItems.ClothesCategory.TSHIRT, clothing.getClothesCategory(), "Clothing category does not match.");
         assertEquals(size, clothing.getSize(), "Size does not match.");
         assertEquals(color, clothing.getColor(), "Color does not match.");
         assertEquals(details, clothing.getItemDetails(), "Details do not match.");
@@ -64,7 +64,7 @@ class ClothingItemsTest {
     void testInvalidBrandThrowsException() {
         // Act & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new ClothingItems("TSHIRTS", 0.1, 30.0, "ADIDAS", "M", "blue", "Invalid brand.")
+                new ClothingItems("T-SHIRT", 0.1, 30.0, "ADIDAS", "M", "blue", "Invalid brand.")
         );
 
         assertTrue(exception.getMessage().contains("Invalid clothing brand"), "Expected exception message not found.");
@@ -74,7 +74,7 @@ class ClothingItemsTest {
     void testInvalidSizeThrowsException() {
         // Act & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new ClothingItems("JACKETS", 0.1, 100.0, "ZARA", "XXL", "black", "Invalid size.")
+                new ClothingItems("JACKET", 0.1, 100.0, "ZARA", "XXL", "black", "Invalid size.")
         );
 
         assertTrue(exception.getMessage().contains("Invalid size of clothing item"), "Expected exception message not found.");
@@ -93,10 +93,10 @@ class ClothingItemsTest {
     @Test
     void testSetAndGetMethods() {
         // Arrange
-        ClothingItems clothing = new ClothingItems("TSHIRTS", 0.1, 20.0, "NIKE", "M", "blue", "Details.");
+        ClothingItems clothing = new ClothingItems("T-SHIRT", 0.1, 20.0, "NIKE", "M", "blue", "Details.");
 
         // Act
-        clothing.setName("JACKETS");
+        clothing.setName("JACKET");
         clothing.setDiscount(0.3);
         clothing.setPrice(100.0);
         clothing.setBrand("TOMMY_HILFIGER");
@@ -144,7 +144,7 @@ class ClothingItemsTest {
         double discount = 0.99; // 99% discount
 
         // Act
-        ClothingItems clothing = new ClothingItems("TSHIRTS", discount, price, "NIKE", "M", "blue", "Extreme discount.");
+        ClothingItems clothing = new ClothingItems("T-SHIRT", discount, price, "NIKE", "M", "blue", "Extreme discount.");
 
         // Assert
         assertEquals(1.0, clothing.getPrice(), "Price calculation with extreme discount failed.");
@@ -154,7 +154,7 @@ class ClothingItemsTest {
     void testZeroPriceThrowsException() {
         // Act & Assert
         Exception exception = assertThrows(IllegalStateException.class, () ->
-                new ClothingItems("TSHIRTS", 0.1, 0.0, "NIKE", "M", "blue", "Zero price.")
+                new ClothingItems("T-SHIRT", 0.1, 0.0, "NIKE", "M", "blue", "Zero price.")
         );
 
         assertTrue(exception.getMessage().contains(">! Price cannot be less than 0.10 [AbstactItem, setPrice()]."), "Expected exception message not found.");
@@ -164,7 +164,7 @@ class ClothingItemsTest {
     void testNegativePriceThrowsException() {
         // Act & Assert
         Exception exception = assertThrows(IllegalStateException.class, () ->
-                new ClothingItems("TSHIRTS", 0.1, -50.0, "NIKE", "M", "blue", "Negative price.")
+                new ClothingItems("T-SHIRT", 0.1, -50.0, "NIKE", "M", "blue", "Negative price.")
         );
 
         assertTrue(exception.getMessage().contains(">! Price cannot be less than 0.10 [AbstactItem, setPrice()]."), "Expected exception message not found.");
@@ -173,7 +173,7 @@ class ClothingItemsTest {
     @Test
     void testExtremePriceAndDiscount() {
         // Arrange
-        String name = "TSHIRTS";
+        String name = "T-SHIRT";
         double price = 1_000.0; // Large price
         double discount = 0.5;  // 50% discount
         String brand = "NIKE";
