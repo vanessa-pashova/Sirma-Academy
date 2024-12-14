@@ -6,7 +6,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public abstract class AbstractItem implements Item, Categorizable, Fragile, Perishable, Sellable, Discount, Printable {
+public abstract class AbstractItem implements Item, Categorizable, Fragile, Perishable, Sellable, Discount, Printable, Identity {
     protected String itemName;
     protected double itemPrice;
     protected CategorizableType category;

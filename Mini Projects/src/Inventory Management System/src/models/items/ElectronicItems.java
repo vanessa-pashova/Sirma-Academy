@@ -7,9 +7,10 @@ public class ElectronicItems extends AbstractItem {
         SAMSUNG;
     }
 
+    private final String electronicID;
+    private static int electronicIDCounter = 1;
     private int warrantyPeriod;
     private Company brand;
-    private static int electronicIDCounter = 1;
 
     private String generateElectronicID() {
         return "E-" + (electronicIDCounter++);
@@ -17,11 +18,17 @@ public class ElectronicItems extends AbstractItem {
 
     public ElectronicItems(String name, double discount, double price, String brand, int warrantyPeriod,  String details) {
         super(name, discount, price, CategorizableType.ELECTRONICS);
+        this.electronicID = generateElectronicID();
         this.setBrand(brand);
         this.setWarrantyPeriod(warrantyPeriod);
         this.setFragile(true);
         this.setSellable(true);
         this.setItemDetails(details);
+    }
+
+    @Override
+    public String getID() {
+        return this.electronicID;
     }
 
     public Company getBrand() {
@@ -37,7 +44,7 @@ public class ElectronicItems extends AbstractItem {
             case "APPLE" -> this.brand = Company.APPLE;
             case "PHILIPS" -> this.brand = Company.PHILIPS;
             case "SAMSUNG" -> this.brand = Company.SAMSUNG;
-            default -> throw new IllegalStateException(">! Invalid brand: " + brand + "[ElectronicItems, setBrand()].");
+            default -> throw new IllegalStateException(">! Invalid brand: " + brand + " [ElectronicItems, setBrand()].");
         }
     }
 

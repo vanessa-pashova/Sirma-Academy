@@ -1,9 +1,10 @@
 package models.items;
 
 public class GroceryItems extends AbstractItem {
+    private final String groceryID;
+    private static int groceryIDCounter = 1;
     private double weight;
     private int calories;
-    private static int groceryIDCounter = 1;
 
     private String generateGroceryID() {
         return "G-" + (groceryIDCounter++);
@@ -11,12 +12,18 @@ public class GroceryItems extends AbstractItem {
 
     public GroceryItems(String name, double discount, double price, String description, double weight, int calories, String creationDate, String expiryDate) {
         super(name, discount, price, CategorizableType.GROCERIES);
+        this.groceryID = generateGroceryID();
         this.setWeight(weight);
         this.setCalories(calories);
         this.setItemDescription(description);
         this.setExpiry(creationDate, expiryDate);
         this.setFragile(false);
         this.setSellable(true);
+    }
+
+    @Override
+    public String getID() {
+        return this.groceryID;
     }
 
     public double getWeight() {

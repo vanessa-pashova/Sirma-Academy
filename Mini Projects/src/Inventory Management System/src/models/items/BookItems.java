@@ -9,11 +9,12 @@ public class BookItems extends AbstractItem {
         BIOGRAPHY
     }
 
+    private final String bookID;
+    private static int bookIDCounter = 1;
     private String author;
     private Genre genre;
     private int totalPages;
     private String publisher;
-    private static int bookIDCounter = 1;
 
     private String generateBookID() {
         return "B-" + (bookIDCounter++);
@@ -21,6 +22,7 @@ public class BookItems extends AbstractItem {
 
     public BookItems(String name, double discount, double price,  String author, String genre, int totalPages, String publisher, String description) {
         super(name, discount, price, CategorizableType.BOOKS);
+        this.bookID = generateBookID();
         this.setAuthor(author);
         this.setGenre(genre);
         this.setTotalPages(totalPages);
@@ -28,6 +30,11 @@ public class BookItems extends AbstractItem {
         this.setItemDescription(description);
         this.setFragile(false);
         this.setSellable(true);
+    }
+
+    @Override
+    public String getID() {
+        return this.bookID;
     }
 
     public String getAuthor() {

@@ -5,20 +5,21 @@ public class ClothingItems extends AbstractItem {
         TSHIRT,
         JEANS,
         JACKETS,
-        SHOES;
+        SHOES
     }
 
     public enum Brands {
         NIKE,
         TOMMY_HILFIGER,
-        ZARA;
+        ZARA
     }
 
+    private final String clothingID;
+    private static int clothingIDCounter = 1;
     private ClothesCategory clothesCategory;
     private Brands brand;
     private String size;
     private String color;
-    private static int clothingIDCounter = 1;
 
     private String generateClothingID() {
         return "C-" + (clothingIDCounter++);
@@ -26,10 +27,16 @@ public class ClothingItems extends AbstractItem {
 
     public ClothingItems(String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
         super(nameOfItem, discount, price, CategorizableType.CLOTHING);
+        this.clothingID = generateClothingID();
         this.setBrand(brand);
         this.setSize(size);
         this.setColor(color);
         this.setItemDetails(details);
+    }
+
+    @Override
+    public String getID() {
+        return this.clothingID;
     }
 
     public ClothesCategory getClothesCategory() {
@@ -50,9 +57,9 @@ public class ClothingItems extends AbstractItem {
 
     public void setName(String name) {
         switch (name.toUpperCase()) {
-            case "TSHIRT" -> this.clothesCategory = ClothesCategory.TSHIRT;
+            case "T-SHIRT" -> this.clothesCategory = ClothesCategory.TSHIRT;
             case "JEANS" -> this.clothesCategory = ClothesCategory.JEANS;
-            case "JACKETS" -> this.clothesCategory = ClothesCategory.JACKETS;
+            case "JACKET" -> this.clothesCategory = ClothesCategory.JACKETS;
             case "SHOES" -> this.clothesCategory = ClothesCategory.SHOES;
             default -> throw new IllegalArgumentException(">! Invalid clothing category: " + name + ", [ClothingItems, setName()].");
         }
