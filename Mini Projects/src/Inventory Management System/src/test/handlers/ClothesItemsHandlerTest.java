@@ -26,7 +26,7 @@ class ClothesItemsHandlerTest {
         // Assert
         assertEquals(40.0, clothing.getPrice(), "Price calculation with discount failed.");
         assertEquals(ClothingItems.Brands.NIKE, clothing.getBrand(), "Brand does not match.");
-        assertEquals(ClothingItems.ClothesCategory.TSHIRT, clothing.getClothesCategory(), "Clothing category does not match.");
+        assertEquals(ClothingItems.ClothesCategory.TSHIRT, clothing.getName(), "Clothing category does not match.");
         assertEquals(size, clothing.getSize(), "Size does not match.");
         assertEquals(color, clothing.getColor(), "Color does not match.");
         assertEquals(details, clothing.getItemDetails(), "Details do not match.");
@@ -124,7 +124,7 @@ class ClothesItemsHandlerTest {
 
         // Assert
         assertEquals(70.0, clothing.getPrice(), "Price update failed.");
-        assertEquals(ClothingItems.ClothesCategory.JACKETS, clothing.getClothesCategory(), "Category update failed.");
+        assertEquals(ClothingItems.ClothesCategory.JACKETS, clothing.getName(), "Category update failed.");
         assertEquals(ClothingItems.Brands.TOMMY_HILFIGER, clothing.getBrand(), "Brand update failed.");
         assertEquals("L", clothing.getSize(), "Size update failed.");
         assertEquals("red", clothing.getColor(), "Color update failed.");
