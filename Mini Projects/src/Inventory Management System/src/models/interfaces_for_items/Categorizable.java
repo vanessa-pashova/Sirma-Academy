@@ -2,10 +2,10 @@ package models.interfaces_for_items;
 
 public interface Categorizable {
     enum CategorizableType {
-        ELECTRONICS,
         BOOKS,
         CLOTHING,
-        GROCERIES;
+        ELECTRONICS,
+        GROCERIES
     }
 
     CategorizableType getCategory();
