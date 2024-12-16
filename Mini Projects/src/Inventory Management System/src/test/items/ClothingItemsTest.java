@@ -106,7 +106,7 @@ class ClothingItemsTest {
 
         // Assert
         assertEquals(70.0, clothing.getPrice(), "Price update failed.");
-        assertEquals(ClothingItems.ClothesCategory.JACKETS, clothing.getClothesCategory(), "Category update failed.");
+        assertEquals(ClothingItems.ClothesCategory.JACKET, clothing.getClothesCategory(), "Category update failed.");
         assertEquals(ClothingItems.Brands.TOMMY_HILFIGER, clothing.getBrand(), "Brand update failed.");
         assertEquals("L", clothing.getSize(), "Size update failed.");
         assertEquals("red", clothing.getColor(), "Color update failed.");

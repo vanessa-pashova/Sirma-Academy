@@ -113,7 +113,7 @@ class InventoryManagerTest {
         manager.getInventory().put(book.getID(), book);
 
         // Act
-        TreeMap<String, AbstractItem> filteredItems = manager.filterByCategory(Categorizable.CategorizableType.BOOKS);
+        TreeMap<String, AbstractItem> filteredItems = manager.filterByCategory("BOOKS");
 
         // Assert
         assertEquals(13, filteredItems.size(), "Filtered items should contain one book.");
