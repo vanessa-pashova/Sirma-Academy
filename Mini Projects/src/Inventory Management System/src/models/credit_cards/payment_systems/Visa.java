@@ -5,8 +5,8 @@ import models.credit_cards.interfaces.VisaInterface;
 public class Visa extends AbstractCard implements VisaInterface {
     private String paymentSystem;
 
-    public Visa(String firstName, String lastName, String cardNumber, String expiryDate, String ccv, String cardType) {
-        super(firstName, lastName, cardNumber, expiryDate, ccv);
+    public Visa(String firstName, String lastName, String cardNumber, String expiryDate, String ccv, String cardType, double amount) {
+        super(firstName, lastName, cardNumber, expiryDate, ccv, amount);
         this.setPaymentSystemVS(cardType);
     }
 

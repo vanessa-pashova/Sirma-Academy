@@ -5,8 +5,8 @@ import models.credit_cards.interfaces.AmericanExpressInterface;
 public class AmericanExpress extends AbstractCard implements AmericanExpressInterface {
     private String paymentSystem;
 
-    public AmericanExpress(String firstName, String lastName, String cardNumber, String expiryDate, String ccv, String paymentSystem) {
-        super(firstName, lastName, cardNumber, expiryDate, ccv);
+    public AmericanExpress(String firstName, String lastName, String cardNumber, String expiryDate, String ccv, String paymentSystem, double amount) {
+        super(firstName, lastName, cardNumber, expiryDate, ccv, amount);
         this.setPaymentSystemAX(paymentSystem);
     }
 

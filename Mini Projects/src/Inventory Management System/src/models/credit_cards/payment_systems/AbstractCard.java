@@ -10,15 +10,17 @@ public abstract class AbstractCard  {
     protected String number;
     protected String expiryDate;
     protected String CCV;
+    protected double balance;
 
     protected final String expiryDateFormat = "MM/yyyy";
 
-    AbstractCard(String firstName, String familyName, String number, String expiryDate, String CCV) {
+    public AbstractCard(String firstName, String familyName, String number, String expiryDate, String CCV, double balance) {
         this.setFirstName(firstName);
         this.setFamilyName(familyName);
         this.setNumber(number);
         this.setExpiryDate(expiryDate);
         this.setCCV(CCV);
+        this.setBalance(balance);
     }
 
     AbstractCard() {
@@ -27,6 +29,7 @@ public abstract class AbstractCard  {
         this.setNumber("");
         this.setExpiryDate("");
         this.setCCV("");
+        this.setBalance(0);
     }
 
     public String getFirstName() {
@@ -47,6 +50,10 @@ public abstract class AbstractCard  {
 
     public String getCCV() {
         return this.CCV;
+    }
+
+    public double getBalance() {
+        return this.balance;
     }
 
     public void setFirstName(String firstName) {
@@ -92,9 +99,7 @@ public abstract class AbstractCard  {
         try {
             date = YearMonth.parse(expiryDate, formatter);
         } catch (DateTimeException e) {
-            System.out.print(">! Invalid date format, [AbstractCard, setExpiryDate()].");
-            System.out.println(e.getMessage());
-            return;
+            throw new DateTimeException(">! Invalid date format, [AbstractCard, setExpiryDate()].", e);
         }
 
         this.expiryDate = expiryDate;
@@ -120,5 +125,12 @@ public abstract class AbstractCard  {
 
         else
             throw new IllegalArgumentException(">! Invalid CCV - must only contain digits, [AbstractCard, setCCV()].");
+    }
+
+    public void setBalance(double balance) {
+        if(balance < 0)
+            throw new IllegalArgumentException(">! Balance cannot be negative, [AbstractCard, setBalance()].");
+
+        this.balance = balance;
     }
 }
