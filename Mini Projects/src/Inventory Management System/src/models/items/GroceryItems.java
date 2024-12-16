@@ -11,7 +11,7 @@ public class GroceryItems extends AbstractItem {
     }
 
     public GroceryItems(String name, double discount, double price, String description, double weight, int calories, String creationDate, String expiryDate) {
-        super(name, discount, price, CategorizableType.GROCERIES);
+        super(name, discount, price, "GROCERIES");
         this.groceryID = generateGroceryID();
         this.setWeight(weight);
         this.setCalories(calories);
@@ -50,7 +50,7 @@ public class GroceryItems extends AbstractItem {
 
     @Override
     public void printDetails() {
-        System.out.println("Name: " + this.getName() +
+        System.out.println("ID: " + this.getID() + " | Name: " + this.getName() +
                 " | Discount: " + this.getDiscount() +
                 " | Price (after discount): " + this.getPrice() +
                 " | Weight: " + this.getWeight() +

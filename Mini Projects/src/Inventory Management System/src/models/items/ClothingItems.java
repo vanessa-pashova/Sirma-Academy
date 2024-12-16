@@ -4,7 +4,7 @@ public class ClothingItems extends AbstractItem {
     public enum ClothesCategory {
         TSHIRT,
         JEANS,
-        JACKETS,
+        JACKET,
         SHOES
     }
 
@@ -26,7 +26,7 @@ public class ClothingItems extends AbstractItem {
     }
 
     public ClothingItems(String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
-        super(nameOfItem, discount, price, CategorizableType.CLOTHING);
+        super(nameOfItem, discount, price, "CLOTHING");
         this.clothingID = generateClothingID();
         this.setBrand(brand);
         this.setSize(size);
@@ -59,7 +59,7 @@ public class ClothingItems extends AbstractItem {
         switch (name.toUpperCase()) {
             case "T-SHIRT" -> this.clothesCategory = ClothesCategory.TSHIRT;
             case "JEANS" -> this.clothesCategory = ClothesCategory.JEANS;
-            case "JACKET" -> this.clothesCategory = ClothesCategory.JACKETS;
+            case "JACKET" -> this.clothesCategory = ClothesCategory.JACKET;
             case "SHOES" -> this.clothesCategory = ClothesCategory.SHOES;
             default -> throw new IllegalArgumentException(">! Invalid clothing category: " + name + ", [ClothingItems, setName()].");
         }
@@ -91,7 +91,7 @@ public class ClothingItems extends AbstractItem {
 
     @Override
     public void printDetails() {
-        System.out.println("Name: " + this.getName() +
+        System.out.println("ID: " + this.getID() + " | Name: " + this.getName() +
                 " | Discount: " + this.getDiscount() +
                 " | Price (after discount): " + this.getPrice() +
                 " | Clothing item: " + this.clothesCategory +

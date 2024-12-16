@@ -20,7 +20,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     protected String itemDetails;
     protected String itemDescription;
 
-    public AbstractItem(String name, double discount, double price, CategorizableType category) {
+    public AbstractItem(String name, double discount, double price, String category) {
         this.setName(name);
         this.setDiscount(discount);
         this.setPrice(price);
@@ -50,8 +50,8 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     }
 
     @Override
-    public CategorizableType getCategory() {
-        return this.category;
+    public String getCategory() {
+        return this.category.toString();
     }
 
     @Override
@@ -129,11 +129,17 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
     }
 
     @Override
-    public void setCategory(CategorizableType category) {
+    public void setCategory(String category) {
         if(category == null)
             throw new IllegalStateException(">! Category cannot be empty [AbstactItem, setCategory()].");
 
-        this.category = category;
+        switch (category) {
+            case "BOOKS" -> this.category = CategorizableType.BOOKS;
+            case "CLOTHING" -> this.category = CategorizableType.CLOTHING;
+            case "ELECTRONICS" -> this.category = CategorizableType.ELECTRONICS;
+            case "GROCERIES" -> this.category = CategorizableType.GROCERIES;
+            default -> throw new IllegalStateException(">! Invalid category, [AbstactItem, setCategory()].");
+        }
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ElectronicItems extends AbstractItem {
     }
 
     public ElectronicItems(String name, double discount, double price, String brand, int warrantyPeriod,  String details) {
-        super(name, discount, price, CategorizableType.ELECTRONICS);
+        super(name, discount, price, "ELECTRONICS");
         this.electronicID = generateElectronicID();
         this.setBrand(brand);
         this.setWarrantyPeriod(warrantyPeriod);
@@ -61,7 +61,7 @@ public class ElectronicItems extends AbstractItem {
 
     @Override
     public void printDetails() {
-        System.out.println("Name: " + this.getName() +
+        System.out.println("ID: " + this.getID() + " | Name: " + this.getName() +
                 " | Discount: " + this.calculatePrice() +
                 " | Price (after discount: " + this.getPrice() +
                 " | Brand: " + this.brand +

@@ -21,7 +21,7 @@ public class BookItems extends AbstractItem {
     }
 
     public BookItems(String name, double discount, double price,  String author, String genre, int totalPages, String publisher, String description) {
-        super(name, discount, price, CategorizableType.BOOKS);
+        super(name, discount, price, "BOOKS");
         this.bookID = generateBookID();
         this.setAuthor(author);
         this.setGenre(genre);
@@ -87,7 +87,7 @@ public class BookItems extends AbstractItem {
 
     @Override
     public void printDetails() {
-        System.out.println("Name: " + this.getName() +
+        System.out.println("ID: " + this.getID() + " | Name: " + this.getName() +
                 " | Author: " + this.getAuthor() +
                 " | Genre: " + this.getGenre() +
                 " | Pages: " + this.getTotalPages() +

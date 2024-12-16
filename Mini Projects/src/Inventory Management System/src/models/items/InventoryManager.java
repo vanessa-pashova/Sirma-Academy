@@ -12,7 +12,7 @@ public class InventoryManager{
     private TreeMap<String, AbstractItem> inventory;
 
     private String getFilePathForItem(AbstractItem item) {
-        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csvFiles/items/";
+        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/";
 
         if (item instanceof BookItems)
             return pathToDir + "Books.csv";
@@ -29,8 +29,8 @@ public class InventoryManager{
         throw new IllegalArgumentException(">! Unknown item type [InventoryManager, getFilePathForItem()].");
     }
 
-    private void loadInventoryFromCSV() {
-        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csvFiles/items/";
+    public void loadInventoryFromCSV() {
+        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/";
 
         BookItemsHandler bookHandler = new BookItemsHandler() {};
         TreeMap<String, BookItems> books = bookHandler.loadFromCSV(pathToDir + "Books.csv");
@@ -497,11 +497,11 @@ public class InventoryManager{
         return inventory.get(id);
     }
 
-    public TreeMap<String, AbstractItem> filterByCategory(Categorizable.CategorizableType category) {
+    public TreeMap<String, AbstractItem> filterByCategory(String category) {
         TreeMap<String, AbstractItem> filteredItems = new TreeMap<>();
 
         inventory.forEach((id, item) -> {
-            if (item.getCategory() == category)
+            if (item.getCategory().equalsIgnoreCase(category))
                 filteredItems.put(id, item);
         });
 
@@ -517,6 +517,12 @@ public class InventoryManager{
         });
 
         return filteredItems;
+    }
+
+    public void printInventory() {
+        inventory.forEach((id, item) -> {
+            item.printDetails();
+        });
     }
 
     public void clearInventory() {
