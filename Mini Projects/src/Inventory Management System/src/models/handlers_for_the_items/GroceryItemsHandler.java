@@ -41,7 +41,7 @@ public class GroceryItemsHandler extends AbstractCSVHandler<GroceryItems> {
                     GroceryItems item = new GroceryItems(name, discount, price, description, weight, calories, creationDate, expiryDate);
                     items.put(id, item);
                 } catch (NumberFormatException | IllegalStateException e) {
-                    System.out.println(">! Skipping invalid line due to error: " + e.getMessage());
+                    System.out.println(">! Error while reading csv file, [GroceryItemsHandler, loadFromCSV()]. " + e.getMessage());
                 }
             }
         } catch (IOException e) {
@@ -50,7 +50,6 @@ public class GroceryItemsHandler extends AbstractCSVHandler<GroceryItems> {
 
         return items;
     }
-
 
     @Override
     public void saveToCSV(String filename, TreeMap<String, GroceryItems> items) {
@@ -67,12 +66,12 @@ public class GroceryItemsHandler extends AbstractCSVHandler<GroceryItems> {
                     writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getItemDescription() + "|" + item.getWeight() + "|" + item.getCalories() + "|" + item.getCreationDate() + "|" + item.getExpiryDate());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving Groceries.csv. [GroceryItemsHandler, saveToCSV()]. ");
+                    System.out.print(">! Error while writing Groceries.csv file, [GroceryItemsHandler, saveToCSV()]. ");
                     System.out.println(e.getMessage());
                 }
             });
         } catch (IOException e) {
-            System.out.print(">! Error while writing Groceries.csv file, [GroceryItemsHandler, saveToCSV()]. ");
+            System.out.print(">! Error while saving Groceries.csv. [GroceryItemsHandler, saveToCSV()]. ");
             System.out.println(e.getMessage());
         }
     }
@@ -86,7 +85,9 @@ public class GroceryItemsHandler extends AbstractCSVHandler<GroceryItems> {
         if (items.containsKey(id)) {
             items.remove(id);
             saveToCSV(filename, items);
-        } else
+        }
+
+        else
             throw new IllegalArgumentException(">! Item does not exist, [GroceryItemsHandler, removeFromCSV()]. ");
     }
 }

@@ -20,7 +20,7 @@ public class BookItemsHandler extends AbstractCSVHandler<BookItems> {
                 System.out.print(">! Error while creating Books.csv, [BookItemsHandler, loadFromCSV()].");
                 System.out.println(e.getMessage());
             }
-            System.out.println("[ Books.csv created -> BookItemsHandler, loadFromCSV()]");
+            System.out.println("[ Books.csv created -> BookItemsHandler, loadFromCSV() ]");
         }
 
         TreeMap<String, BookItems> items = new TreeMap<>();
@@ -67,7 +67,7 @@ public class BookItemsHandler extends AbstractCSVHandler<BookItems> {
                             item.getPublisher() + "|" + item.getItemDescription());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving Books.csv, [BookItemsHandler, saveToCSV()].");
+                    System.out.print(">! Error while writing Books.csv, [BookItemsHandler, saveToCSV()].");
                     System.out.println(e.getMessage());
                 }
             });
