@@ -5,12 +5,19 @@ import models.credit_cards.payment_systems.AbstractCard;
 import models.credit_cards.payment_systems.AmericanExpress;
 import models.credit_cards.payment_systems.MasterCard;
 import models.credit_cards.payment_systems.Visa;
+import models.handlers_for_purchase.FavouritesHandler;
+import models.items.AbstractItem;
 import models.items.InventoryManager;
+
+import java.util.Scanner;
+import java.util.TreeMap;
 
 public class User {
     private String firstName, familyName, email, password;
-    private InventoryManager previousPurchases, currentPurchase, favourites;
     private AbstractCard card;
+
+    private TreeMap<String, AbstractItem> previousPurchases, currentPurchase, favourites;
+    private InventoryManager inventoryManager = new InventoryManager() {};
 
     public User(String firstName, String familyName, String email, String password) {
         this.setFirstName(firstName);
@@ -33,18 +40,6 @@ public class User {
 
     public String getPassword() {
         return this.password;
-    }
-
-    public InventoryManager getPreviousPurchases() {
-        return this.previousPurchases;
-    }
-
-    public InventoryManager getCurrentPurchase() {
-        return this.currentPurchase;
-    }
-
-    public InventoryManager getFavourites() {
-        return this.favourites;
     }
 
     public void setFirstName(String firstName) {
@@ -107,6 +102,37 @@ public class User {
             case "AmericanExpress" -> this.card = new AmericanExpress(this.firstName, this.familyName, number, expiryDate, ccv, cardType);
             default -> throw new IllegalStateException(">! Invalid card type, [User, addCard()].");
         }
+
+        CardHandler cardHandler = new CardHandler();
+        cardHandler.addCard(this.card);
+    }
+
+    public void itemsLookThru() {
+        System.out.println("------ INVENTORY CURRENT AVAILABILITY ------");
+        inventoryManager.printInventory();
+        System.out.println("--------------------------------------------");
+    }
+
+    public void addToFavourites(String id) {
+        FavouritesHandler favouritesHandler = new FavouritesHandler() {};
+        if(id == null || id.isEmpty())
+            throw new IllegalArgumentException(">! Item's id cannot be empty, [User, addToFavourites()].");
+
+        if(inventoryManager.getInventory().get(id) != null) {
+            favourites.put(id, inventoryManager.getInventory().get(id));
+            favouritesHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/user/Favourites.csv", favourites);
+        }
+
+        else
+            throw new IllegalStateException(">! Item does not exist in the inventory, [User, addToFavourites()].");
+    }
+
+    public void printFavourites() {
+        System.out.println("------ MY FAVOURITES ------");
+        favourites.forEach((id, item) -> {
+            item.printDetails();
+        });
+        System.out.println("---------------------------");
     }
 
 
