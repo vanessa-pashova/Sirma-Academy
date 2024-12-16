@@ -8,6 +8,6 @@ public interface Categorizable {
         GROCERIES
     }
 
-    CategorizableType getCategory();
-    void setCategory(CategorizableType type);
+    String getCategory();
+    void setCategory(String type);
 }
