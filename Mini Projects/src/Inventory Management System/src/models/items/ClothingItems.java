@@ -2,8 +2,8 @@ package models.items;
 
 public class ClothingItems extends AbstractItem {
     public enum ClothesCategory {
-        TSHIRT,
-        JEANS,
+        SHIRT,
+        TROUSERS,
         JACKET,
         SHOES
     }
@@ -30,6 +30,7 @@ public class ClothingItems extends AbstractItem {
     public ClothingItems(String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
         super(nameOfItem, discount, price, "CLOTHING");
         this.clothingID = generateClothingID();
+        this.setClothesCategory(nameOfItem);
         this.setBrand(brand);
         this.setSize(size);
         this.setColor(color);
@@ -40,6 +41,7 @@ public class ClothingItems extends AbstractItem {
     public ClothingItems(String id, String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
         super(nameOfItem, discount, price, "CLOTHING");
         this.clothingID = id;
+        this.setClothesCategory(nameOfItem);
         this.setBrand(brand);
         this.setSize(size);
         this.setColor(color);
@@ -67,21 +69,31 @@ public class ClothingItems extends AbstractItem {
         return this.color;
     }
 
+    @Override
     public void setName(String name) {
-        switch (name.toUpperCase()) {
-            case "T-SHIRT" -> this.clothesCategory = ClothesCategory.TSHIRT;
-            case "JEANS" -> this.clothesCategory = ClothesCategory.JEANS;
-            case "JACKET" -> this.clothesCategory = ClothesCategory.JACKET;
-            case "SHOES" -> this.clothesCategory = ClothesCategory.SHOES;
+        if(!("T-SHIRT".equalsIgnoreCase(name) || "CROP-TOP".equalsIgnoreCase(name) || "SHIRT".equalsIgnoreCase(name) || "TROUSERS".equalsIgnoreCase(name) || "JEANS".equalsIgnoreCase(name) ||
+                "WEDGE".equalsIgnoreCase(name) || "JACKET".equalsIgnoreCase(name) || "COAT".equalsIgnoreCase(name) || "SHOES".equalsIgnoreCase(name) || "TRAINERS".equalsIgnoreCase(name)))
+            throw new IllegalArgumentException(">! Invalid clothing name, [ClothingItems, setName()].");
+
+        super.setName(name);
+    }
+
+    public void setClothesCategory(String name) {
+        setName(name);
+        switch (this.getName().toUpperCase()) {
+            case "T-SHIRT", "CROP-TOP", "SHIRT" -> this.clothesCategory = ClothesCategory.SHIRT;
+            case "TROUSERS", "JEANS", "WEDGE"   -> this.clothesCategory = ClothesCategory.TROUSERS;
+            case "JACKET", "COAT"               -> this.clothesCategory = ClothesCategory.JACKET;
+            case "SHOES", "TRAINERS"            -> this.clothesCategory = ClothesCategory.SHOES;
             default -> throw new IllegalArgumentException(">! Invalid clothing category: " + name + ", [ClothingItems, setName()].");
         }
     }
 
     public void setBrand(String brand) {
         switch (brand.toUpperCase()) {
-            case "NIKE" -> this.brand = Brands.NIKE;
+            case "NIKE"           -> this.brand = Brands.NIKE;
             case "TOMMY_HILFIGER" -> this.brand = Brands.TOMMY_HILFIGER;
-            case "ZARA" -> this.brand = Brands.ZARA;
+            case "ZARA"           -> this.brand = Brands.ZARA;
             default -> throw new IllegalArgumentException(">! Invalid clothing brand: " + brand + ", [ClothingItems, setBrand()].");
         }
     }
