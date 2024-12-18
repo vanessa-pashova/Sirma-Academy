@@ -1,5 +1,8 @@
 ID|Name|Price|Discount|Description|Weight|Calories|CreationDate|ExpiryDate
 G-1|Bananas|1.99|0.10|Fresh yellow bananas|1.2|105|01-12-2024|15-12-2024
+G-10|Carrots|1.79|0.10|Fresh orange carrots|1.0|25|29-11-2024|10-12-2024
+G-11|Yogurt|1.89|0.10|Greek yogurt with no sugar|0.5|59|28-11-2024|05-12-2024
+G-12|Potatoes|3.49|0.05|Golden potatoes|2.0|77|30-11-2024|20-12-2024
 G-2|Milk|2.49|0.05|Low-fat cow milk|1.0|42|30-11-2024|07-12-2024
 G-3|Bread|1.29|0.15|Whole grain bread|0.5|120|29-11-2024|06-12-2024
 G-4|Cheese|4.99|0.20|Aged cheddar cheese|0.3|402|28-11-2024|12-12-2024
@@ -8,6 +11,3 @@ G-6|Tomatoes|2.99|0.10|Vine-ripened tomatoes|1.0|18|30-11-2024|09-12-2024
 G-7|Chicken Breast|7.49|0.15|Fresh chicken breast fillets|1.5|165|29-11-2024|04-12-2024
 G-8|Rice|2.49|0.00|Long-grain white rice|2.0|130|20-11-2024|20-05-2025
 G-9|Apples|3.59|0.05|Crisp red apples|1.2|95|01-12-2024|15-12-2024
-G-10|Carrots|1.79|0.10|Fresh orange carrots|1.0|25|29-11-2024|10-12-2024
-G-11|Yogurt|1.89|0.10|Greek yogurt with no sugar|0.5|59|28-11-2024|05-12-2024
-G-12|Potatoes|3.49|0.05|Golden potatoes|2.0|77|30-11-2024|20-12-2024

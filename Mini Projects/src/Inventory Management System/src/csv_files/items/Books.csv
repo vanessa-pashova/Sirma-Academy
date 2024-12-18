@@ -1,5 +1,8 @@
 ID|Name|Price|Discount|Author|Genre|TotalPages|Publisher|Description
 B-1|The Hobbit|19.99|0.1|J.R.R. Tolkien|FANTASY|310|HarperCollins|A classic fantasy tale of adventure and courage.
+B-10|Steve Jobs|25.99|0.1|Walter Isaacson|BIOGRAPHY|656|Simon & Schuster|The life story of the visionary co-founder of Apple.
+B-11|The Name of the Wind|19.99|0.1|Patrick Rothfuss|FANTASY|662|DAW Books|An epic fantasy of a gifted young musician and magician.
+B-12|Foundation|18.50|0.2|Isaac Asimov|SCIENCE_FICTION|255|Gnome Press|The story of the fall and rebirth of a galactic empire.
 B-2|Dune|24.99|0.15|Frank Herbert|SCIENCE_FICTION|412|Ace Books|A science fiction masterpiece about politics, religion, and survival.
 B-3|The Girl with the Dragon Tattoo|14.99|0.05|Stieg Larsson|MYSTERY|465|Norstedts Förlag|A gripping mystery of murder and corporate intrigue.
 B-4|Sapiens: A Brief History of Humankind|21.50|0.2|Yuval Noah Harari|NON_FICTION|498|Harper|A thought-provoking journey through human history.
@@ -8,6 +11,3 @@ B-6|Harry Potter and the Philosopher's Stone|18.99|0.1|J.K. Rowling|FANTASY|223|
 B-7|Neuromancer|17.50|0.2|William Gibson|SCIENCE_FICTION|271|Ace Books|A cyberpunk classic exploring AI and cybernetics.
 B-8|The Da Vinci Code|16.99|0.05|Dan Brown|MYSTERY|489|Doubleday|A thrilling mystery filled with codes and secrets.
 B-9|Educated|20.00|0.15|Tara Westover|NON_FICTION|334|Random House|A memoir of growing up in a survivalist family.
-B-10|Steve Jobs|25.99|0.1|Walter Isaacson|BIOGRAPHY|656|Simon & Schuster|The life story of the visionary co-founder of Apple.
-B-11|The Name of the Wind|19.99|0.1|Patrick Rothfuss|FANTASY|662|DAW Books|An epic fantasy of a gifted young musician and magician.
-B-12|Foundation|18.50|0.2|Isaac Asimov|SCIENCE_FICTION|255|Gnome Press|The story of the fall and rebirth of a galactic empire.
