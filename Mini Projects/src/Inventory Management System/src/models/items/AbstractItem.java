@@ -106,6 +106,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         }
 
         this.itemDiscount = discount;
+        this.itemPrice = calculatePrice();
     }
 
     @Override
@@ -113,19 +114,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         if(itemPrice <= 0)
             throw new IllegalStateException(">! Price cannot be less than 0.10 [AbstactItem, setPrice()].");
 
-        if(this.itemDiscount == 0) {
-//            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
-            this.itemPrice = itemPrice;
-        }
-
-        else {
-//            System.out.println("[ Price before discount: " + itemPrice + " ]");
-//            System.out.println("------- ITEM DISCOUNT APPLIED ------");
-            this.itemPrice = itemPrice;
-            this.itemPrice = calculatePrice();
-//            System.out.println("[ Price after discount: " + this.itemPrice + " ]");
-//            System.out.println();
-        }
+        this.itemPrice = itemPrice;
     }
 
     @Override
@@ -149,28 +138,28 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
 
     @Override
     public void setExpiry(String creationDate, String expirationDate) {
-        if((creationDate == null || creationDate.isEmpty()) || (expirationDate == null || expirationDate.isEmpty()))
-            throw new IllegalStateException(">! Date cannot be empty [AbstactItem, setExpiry()].");
+        if ((creationDate == null || creationDate.isEmpty()) || (expirationDate == null || expirationDate.isEmpty()))
+            throw new IllegalStateException(">! Date cannot be empty [AbstractItem, setExpiry()].");
 
-        String format = "dd-MM-yyyy";                                           //format for the dates
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);      //creating the formatter
+        final String DATE_FORMAT = "dd-MM-yyyy"; // Keep the desired date DATE_FORMAT
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
-        LocalDate creation = null, expiration = null;
+        LocalDate creation, expiration;
         try {
             creation = LocalDate.parse(creationDate, formatter);
             expiration = LocalDate.parse(expirationDate, formatter);
         } catch (DateTimeException e) {
-            System.out.print(">! Invalid date format [AbstactItem, setExpiry()].");
-            System.out.println(e.getMessage());
-            return;
+            throw new IllegalArgumentException(">! Invalid date DATE_FORMAT [AbstractItem, setExpiry()].", e);
         }
 
-        if(creation.isAfter(expiration))
-            throw new DateTimeException(">! Expiry date is before the one of the creation [AbstractItem, setExpiry()].");
+        if (creation.isAfter(expiration))
+            throw new IllegalArgumentException(">! Expiry date cannot be before the creation date [AbstractItem, setExpiry()].");
 
-        this.creationDate = creation.toString();
-        this.expirationDate = expiration.toString();
+        // Save the formatted strings instead of LocalDate.toString()
+        this.creationDate = formatter.format(creation);
+        this.expirationDate = formatter.format(expiration);
     }
+
 
     @Override
     public void setSellable(boolean sellable) {
