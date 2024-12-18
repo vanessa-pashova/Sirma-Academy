@@ -1,29 +1,24 @@
 package models.user;
 
-import models.credit_cards.handlers.CardHandler;
-import models.credit_cards.payment_systems.AbstractCard;
-import models.credit_cards.payment_systems.AmericanExpress;
-import models.credit_cards.payment_systems.MasterCard;
-import models.credit_cards.payment_systems.Visa;
-import models.handlers_for_purchase.FavouritesHandler;
+import models.interfaces_for_items.Categorizable;
 import models.items.AbstractItem;
 import models.items.InventoryManager;
+import models.user.handler_for_user.UserHandler;
 
-import java.util.Scanner;
 import java.util.TreeMap;
 
-public class User {
-    private String firstName, familyName, email, password;
-    private AbstractCard card;
+public abstract class AbstractUser implements Role {
+    protected String firstName, familyName, email, password;
+    protected Role.RoleType role;
 
-    private TreeMap<String, AbstractItem> previousPurchases, currentPurchase, favourites;
-    private InventoryManager inventoryManager = new InventoryManager() {};
+    protected InventoryManager inventory = new InventoryManager();
 
-    public User(String firstName, String familyName, String email, String password) {
+    public AbstractUser(String firstName, String familyName, String email, String password, String role) {
         this.setFirstName(firstName);
         this.setFamilyName(familyName);
         this.setEmail(email);
         this.setPassword(password);
+        this.setRole(role);
     }
 
     public String getFirstName() {
@@ -40,6 +35,15 @@ public class User {
 
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public String getRole() {
+        return this.role.toString();
+    }
+
+    public InventoryManager getInventory() {
+        return this.inventory;
     }
 
     public void setFirstName(String firstName) {
@@ -60,10 +64,11 @@ public class User {
         if(email == null || email.isEmpty())
             throw new IllegalArgumentException(">! User's email cannot be empty, [User, setEmail()].");
 
-        if(!email.endsWith("@gmail.com") || !email.endsWith("@abv.bg"))
-            throw new IllegalArgumentException(">! Invalid email domain, [User, setEmail()].");
+        if(email.endsWith("@gmail.com") || email.endsWith("@abv.bg"))
+            this.email = email.toLowerCase();
 
-        this.email = email.toLowerCase();
+        else
+            throw new IllegalArgumentException(">! Invalid email domain, [User, setEmail()].");
     }
 
     public void setPassword(String password) {
@@ -95,45 +100,77 @@ public class User {
             throw new IllegalStateException(">! Invalid password format - must contain at least one capital and one small letter, and a digit as well, [User, setPassword()].");
     }
 
-    public void addCard(String number, String expiryDate, String ccv, String cardType) {
-        switch (cardType) {
-            case "Visa" -> this.card = new Visa(this.firstName, this.familyName, number, expiryDate, ccv, cardType);
-            case "MasterCard" -> this.card = new MasterCard(this.firstName, this.familyName, number, expiryDate, ccv, cardType);
-            case "AmericanExpress" -> this.card = new AmericanExpress(this.firstName, this.familyName, number, expiryDate, ccv, cardType);
-            default -> throw new IllegalStateException(">! Invalid card type, [User, addCard()].");
-        }
+    @Override
+    public void setRole(String role) {
+        if(role == null || role.isEmpty())
+            throw new IllegalArgumentException(">! User's role cannot be empty, [User, setRole()].");
 
-        CardHandler cardHandler = new CardHandler();
-        cardHandler.addCard(this.card);
+        if("ADMIN".equalsIgnoreCase(role))
+            this.role = Role.RoleType.ADMIN;
+
+        else if("CUSTOMER".equalsIgnoreCase(role))
+            this.role = Role.RoleType.CUSTOMER;
+
+        else
+            throw new IllegalArgumentException(">! Invalid customer role, [User, setRole()].");
     }
 
     public void itemsLookThru() {
+        if (inventory.getInventory().isEmpty()) {
+            System.out.println("------ INVENTORY IS EMPTY ------");
+            return;
+        }
+
         System.out.println("------ INVENTORY CURRENT AVAILABILITY ------");
-        inventoryManager.printInventory();
+        inventory.printInventory();
         System.out.println("--------------------------------------------");
     }
 
-    public void addToFavourites(String id) {
-        FavouritesHandler favouritesHandler = new FavouritesHandler() {};
-        if(id == null || id.isEmpty())
-            throw new IllegalArgumentException(">! Item's id cannot be empty, [User, addToFavourites()].");
+    public void filterCategory(String category) {
+        if (category == null || category.isEmpty())
+            throw new IllegalArgumentException(">! Category cannot be null or empty, [AbstractUser, filterCategory()].");
 
-        if(inventoryManager.getInventory().get(id) != null) {
-            favourites.put(id, inventoryManager.getInventory().get(id));
-            favouritesHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/user/Favourites.csv", favourites);
+        TreeMap<String, AbstractItem> filtered = inventory.filterByCategory(category);
+
+        if (filtered.isEmpty()) {
+            System.out.println("------ NO ITEMS FOUND FOR CATEGORY: " + category.toUpperCase() + " ------");
+            return;
         }
 
-        else
-            throw new IllegalStateException(">! Item does not exist in the inventory, [User, addToFavourites()].");
-    }
-
-    public void printFavourites() {
-        System.out.println("------ MY FAVOURITES ------");
-        favourites.forEach((id, item) -> {
+        System.out.println("------ FILTERED BY CATEGORY ------");
+        for (AbstractItem item : filtered.values())
             item.printDetails();
-        });
-        System.out.println("---------------------------");
+
+        System.out.println("----------------------------------");
     }
 
+    public void findItem(String id) {
+        if (id == null || id.isEmpty())
+            throw new IllegalArgumentException(">! Item ID cannot be null or empty, [Admin, findItem()].");
 
+        AbstractItem item = inventory.findItem(id);
+
+        if (item == null) {
+            System.out.println(">! Item with ID: " + id + " not found, [Admin, findItem()].");
+            return;
+        }
+
+        System.out.println("------ ITEM FOUND ------");
+        item.printDetails();
+        System.out.println("------------------------");
+    }
+
+    public void printInfoForMe() {
+        System.out.println("First name: " + this.firstName + " | Family Name: " + this.familyName + " | Email: " + this.email + " | Role: " + this.role);
+    }
+
+    public void deleteMe() {
+        this.firstName = null;
+        this.familyName = null;
+        this.email = null;
+        this.password = null;
+        this.role = null;
+
+        System.out.println("------ ACCOUNT IS DELETED ------");
+    }
 }
