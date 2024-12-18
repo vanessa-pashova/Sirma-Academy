@@ -24,9 +24,10 @@ public class BookItemsHandler extends AbstractCSVHandler<BookItems> {
         }
 
         TreeMap<String, BookItems> items = new TreeMap<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine();
+        int maxID = 0;
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line = reader.readLine(); //Skip the header
             while ((line = reader.readLine()) != null) {
                 String[] components = line.split("\\|");
                 String id = components[0];
@@ -39,14 +40,19 @@ public class BookItemsHandler extends AbstractCSVHandler<BookItems> {
                 String publisher = components[7];
                 String description = components[8];
 
-                BookItems item = new BookItems(name, discount, price, author, genre, totalPages, publisher, description);
+                BookItems item = new BookItems(id, name, discount, price, author, genre, totalPages, publisher, description);
                 items.put(id, item);
+
+
+                int currentID = Integer.parseInt(id.split("-")[1]);
+                if (currentID > maxID)
+                    maxID = currentID;
             }
         } catch (IOException e) {
-            System.out.print(">! Error while loading Books.csv, [BookItemsHandler, loadFromCSV()].");
-            System.out.println(e.getMessage());
+            System.out.println(">! Error while loading Books.csv: " + e.getMessage());
         }
 
+        BookItems.updateBookIDCounter(maxID);
         return items;
     }
 

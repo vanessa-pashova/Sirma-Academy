@@ -17,15 +17,17 @@ public class ElectronicItemsHandler extends AbstractCSVHandler<ElectronicItems> 
                 writer.write("ID|Name|Price|Discount|Brand|Warranty|Details");
                 writer.newLine();
             } catch (IOException e) {
-                System.out.print(">! Error while creating a loading file Electronics.csv, [ElectronicItemsHandler, loadFromCSV()]. ");
+                System.out.print(">! Error while creating Electronics.csv, [ElectronicItemsHandler, loadFromCSV()]. ");
                 System.out.println(e.getMessage());
             }
-            System.out.println("[ Electronics.csv created -> ElectronicItemsHandler, loadFromCSV()]");
+            System.out.println("[ Electronics.csv created -> ElectronicItemsHandler, loadFromCSV()].");
         }
 
         TreeMap<String, ElectronicItems> items = new TreeMap<>();
+        int maxID = 0;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine();
+            String line = reader.readLine(); // Skip header
 
             while ((line = reader.readLine()) != null) {
                 String[] components = line.split("\\|");
@@ -37,14 +39,21 @@ public class ElectronicItemsHandler extends AbstractCSVHandler<ElectronicItems> 
                 int warranty = Integer.parseInt(components[5]);
                 String details = components[6];
 
-                ElectronicItems item = new ElectronicItems(name, discount, price, brand, warranty, details);
+                ElectronicItems item = new ElectronicItems(id, name, discount, price, brand, warranty, details);
                 items.put(id, item);
+
+                // Extract the numeric part of the ID and find the max
+                int currentID = Integer.parseInt(id.split("-")[1]);
+                if (currentID > maxID)
+                    maxID = currentID;
             }
         } catch (IOException e) {
             System.out.print(">! Error while loading Electronics.csv, [ElectronicItemsHandler, loadFromCSV()]. ");
             System.out.println(e.getMessage());
         }
 
+        // Update the static ID counter based on the maximum ID found
+        ElectronicItems.updateElectronicIDCounter(maxID);
         return items;
     }
 
@@ -60,10 +69,11 @@ public class ElectronicItemsHandler extends AbstractCSVHandler<ElectronicItems> 
 
             items.forEach((id, item) -> {
                 try {
-                    writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getBrand() + "|" + item.getWarrantyPeriod() +  "|" + item.getItemDetails());
+                    writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" +
+                            item.getBrand() + "|" + item.getWarrantyPeriod() + "|" + item.getItemDetails());
                     writer.newLine();
                 } catch (IOException e) {
-                    System.out.print(">! Error while saving items in Electronics.csv, [ElectronicItemsHandler, saveToCSV()]. ");
+                    System.out.print(">! Error while writing Electronics.csv, [ElectronicItemsHandler, saveToCSV()]. ");
                     System.out.println(e.getMessage());
                 }
             });
