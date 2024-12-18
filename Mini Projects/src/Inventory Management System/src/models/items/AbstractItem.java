@@ -114,17 +114,17 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
             throw new IllegalStateException(">! Price cannot be less than 0.10 [AbstactItem, setPrice()].");
 
         if(this.itemDiscount == 0) {
-            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
+//            System.out.println("------- NO ITEM DISCOUNT APPLIED ------");
             this.itemPrice = itemPrice;
         }
 
         else {
-            System.out.println("[ Price before discount: " + itemPrice + " ]");
-            System.out.println("------- ITEM DISCOUNT APPLIED ------");
+//            System.out.println("[ Price before discount: " + itemPrice + " ]");
+//            System.out.println("------- ITEM DISCOUNT APPLIED ------");
             this.itemPrice = itemPrice;
             this.itemPrice = calculatePrice();
-            System.out.println("[ Price after discount: " + this.itemPrice + " ]");
-            System.out.println();
+//            System.out.println("[ Price after discount: " + this.itemPrice + " ]");
+//            System.out.println();
         }
     }
 
@@ -133,7 +133,7 @@ public abstract class AbstractItem implements Item, Categorizable, Fragile, Peri
         if(category == null)
             throw new IllegalStateException(">! Category cannot be empty [AbstactItem, setCategory()].");
 
-        switch (category) {
+        switch (category.toUpperCase()) {
             case "BOOKS" -> this.category = CategorizableType.BOOKS;
             case "CLOTHING" -> this.category = CategorizableType.CLOTHING;
             case "ELECTRONICS" -> this.category = CategorizableType.ELECTRONICS;

@@ -15,19 +15,31 @@ public class ClothingItems extends AbstractItem {
     }
 
     private final String clothingID;
-    private static int clothingIDCounter = 1;
+    private static int clothingIDCounter = 1; // Static counter for generating new IDs
     private ClothesCategory clothesCategory;
     private Brands brand;
     private String size;
     private String color;
 
+    // Generate a unique ID
     private String generateClothingID() {
         return "C-" + (clothingIDCounter++);
     }
 
+    // Constructor for creating new items
     public ClothingItems(String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
         super(nameOfItem, discount, price, "CLOTHING");
         this.clothingID = generateClothingID();
+        this.setBrand(brand);
+        this.setSize(size);
+        this.setColor(color);
+        this.setItemDetails(details);
+    }
+
+    // Constructor for loading items with existing IDs
+    public ClothingItems(String id, String nameOfItem, double discount, double price, String brand, String size, String color, String details) {
+        super(nameOfItem, discount, price, "CLOTHING");
+        this.clothingID = id;
         this.setBrand(brand);
         this.setSize(size);
         this.setColor(color);
@@ -82,10 +94,10 @@ public class ClothingItems extends AbstractItem {
     }
 
     public void setColor(String color) {
-        if (color.toLowerCase().equals("yellow") || color.toLowerCase().equals("green") || color.toLowerCase().equals("blue") ||
-                color.toLowerCase().equals("red") || color.toLowerCase().equals("black") || color.toLowerCase().equals("white")) {
+        if (color.toLowerCase().matches("yellow|green|blue|red|black|white"))
             this.color = color;
-        } else
+
+        else
             throw new IllegalArgumentException(">! Invalid color of clothing item, [ClothingItems, setColor()].");
     }
 
@@ -98,6 +110,12 @@ public class ClothingItems extends AbstractItem {
                 " | Brand: " + this.brand +
                 " | Size: " + this.size +
                 " | Color: " + this.color +
+                " | Category: " + this.getCategory() +
                 " | Details: " + this.getItemDetails());
+    }
+
+    // Update the static counter based on the highest ID found
+    public static void updateClothingIDCounter(int maxID) {
+        clothingIDCounter = maxID + 1;
     }
 }

@@ -1,7 +1,7 @@
 package models.items;
 
 public class BookItems extends AbstractItem {
-    public enum Genre {     //public only for the tests - they all passed
+    public enum Genre {
         FANTASY,
         SCIENCE_FICTION,
         MYSTERY,
@@ -20,7 +20,19 @@ public class BookItems extends AbstractItem {
         return "B-" + (bookIDCounter++);
     }
 
-    public BookItems(String name, double discount, double price,  String author, String genre, int totalPages, String publisher, String description) {
+    public BookItems(String id, String name, double discount, double price, String author, String genre, int totalPages, String publisher, String description) {
+        super(name, discount, price, "BOOKS");
+        this.bookID = id;
+        this.setAuthor(author);
+        this.setGenre(genre);
+        this.setTotalPages(totalPages);
+        this.setPublisher(publisher);
+        this.setItemDescription(description);
+        this.setFragile(false);
+        this.setSellable(true);
+    }
+
+    public BookItems(String name, double discount, double price, String author, String genre, int totalPages, String publisher, String description) {
         super(name, discount, price, "BOOKS");
         this.bookID = generateBookID();
         this.setAuthor(author);
@@ -41,15 +53,23 @@ public class BookItems extends AbstractItem {
         return author;
     }
 
+    public String getGenre() {
+        return this.genre.toString();
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
     public void setAuthor(String author) {
         if (author == null || author.isEmpty())
             throw new IllegalArgumentException(">! Author name cannot be empty [BookItems, setAuthor()].");
 
         this.author = author;
-    }
-
-    public Genre getGenre() {
-        return this.genre;
     }
 
     public void setGenre(String genre) {
@@ -63,19 +83,11 @@ public class BookItems extends AbstractItem {
         }
     }
 
-    public int getTotalPages() {
-        return totalPages;
-    }
-
     public void setTotalPages(int totalPages) {
         if (totalPages <= 0)
             throw new IllegalArgumentException(">! Total pages must be greater than zero [BookItems, setTotalPages()].");
 
         this.totalPages = totalPages;
-    }
-
-    public String getPublisher() {
-        return publisher;
     }
 
     public void setPublisher(String publisher) {
@@ -88,11 +100,17 @@ public class BookItems extends AbstractItem {
     @Override
     public void printDetails() {
         System.out.println("ID: " + this.getID() + " | Name: " + this.getName() +
+                " | Discount: " + this.getDiscount() +
+                " | Price (after discount): " + this.getPrice() +
                 " | Author: " + this.getAuthor() +
                 " | Genre: " + this.getGenre() +
                 " | Pages: " + this.getTotalPages() +
                 " | Publisher: " + this.getPublisher() +
-                " | Discount: " + this.getDiscount() +
-                " | Price (after discount): " + this.getPrice());
+                " | Category: " + this.getCategory() +
+                " | Description: " + this.getItemDescription());
+    }
+
+    public static void updateBookIDCounter(int maxID) {
+        bookIDCounter = maxID + 1;
     }
 }
