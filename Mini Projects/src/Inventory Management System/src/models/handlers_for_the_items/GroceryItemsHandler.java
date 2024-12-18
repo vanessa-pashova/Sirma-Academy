@@ -46,9 +46,9 @@ public class GroceryItemsHandler extends AbstractCSVHandler<GroceryItems> {
 
                     // Update maxID based on the current item's ID
                     int currentID = Integer.parseInt(id.split("-")[1]);
-                    if (currentID > maxID) {
+                    if (currentID > maxID)
                         maxID = currentID;
-                    }
+
                 } catch (IllegalArgumentException e) {
                     System.out.println(">! Error reading CSV line: " + line + " [GroceryItemsHandler, loadFromCSV()].");
                 }
