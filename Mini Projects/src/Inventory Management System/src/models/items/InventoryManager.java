@@ -1,19 +1,14 @@
 package models.items;
 
 import models.handlers_for_the_items.*;
-import models.interfaces_for_items.Categorizable;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class InventoryManager{
     private TreeMap<String, AbstractItem> inventory;
+    private final String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/";
 
     private String getFilePathForItem(AbstractItem item) {
-        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/";
-
         if (item instanceof BookItems)
             return pathToDir + "Books.csv";
 
@@ -30,15 +25,13 @@ public class InventoryManager{
     }
 
     public void loadInventoryFromCSV() {
-        String pathToDir = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/";
-
         BookItemsHandler bookHandler = new BookItemsHandler() {};
         TreeMap<String, BookItems> books = bookHandler.loadFromCSV(pathToDir + "Books.csv");
         this.inventory.putAll(books);
 
         ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
-        TreeMap<String, ClothingItems> clothings = clothesHandler.loadFromCSV(pathToDir + "Clothes.csv");
-        this.inventory.putAll(clothings);
+        TreeMap<String, ClothingItems> clothing = clothesHandler.loadFromCSV(pathToDir + "Clothes.csv");
+        this.inventory.putAll(clothing);
 
         ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
         TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCSV(pathToDir + "Electronics.csv");
@@ -49,36 +42,60 @@ public class InventoryManager{
         this.inventory.putAll(groceries);
     }
 
-    private void saveToCSV(AbstractItem currentItem) {
-        if (inventory.containsKey(currentItem.getID()))
-            throw new IllegalArgumentException(">! Duplicate item ID detected: " + currentItem.getID());
+    private void updateIDCounters() {
+        // Load all CSV files and find the maximum ID for each type
+        BookItemsHandler bookHandler = new BookItemsHandler();
+        ClothesItemsHandler clothesHandler = new ClothesItemsHandler();
+        ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler();
+        GroceryItemsHandler groceryHandler = new GroceryItemsHandler();
 
-        if(currentItem instanceof BookItems) {
-            BookItemsHandler bookHandler = new BookItemsHandler() {};
-            TreeMap<String, BookItems> books = bookHandler.loadFromCSV(getFilePathForItem(currentItem));
-            books.put(currentItem.getID(), (BookItems)currentItem);
-            bookHandler.saveToCSV(getFilePathForItem(currentItem), books);
+        TreeMap<String, BookItems> books = bookHandler.loadFromCSV("path_to_books.csv");
+        TreeMap<String, ClothingItems> clothes = clothesHandler.loadFromCSV("path_to_clothes.csv");
+        TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCSV("path_to_electronics.csv");
+        TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCSV("path_to_groceries.csv");
+
+        // Update counters based on the maximum ID found
+        BookItems.updateBookIDCounter(getMaxID(books.keySet()));
+        ClothingItems.updateClothingIDCounter(getMaxID(clothes.keySet()));
+        ElectronicItems.updateElectronicIDCounter(getMaxID(electronics.keySet()));
+        GroceryItems.updateGroceryIDCounter(getMaxID(groceries.keySet()));
+    }
+
+    // Helper method to extract the maximum numeric part of IDs
+    private int getMaxID(Set<String> ids) {
+        return ids.stream()
+                .mapToInt(id -> Integer.parseInt(id.split("-")[1]))
+                .max()
+                .orElse(0);
+    }
+
+    private void saveItemToCSV(AbstractItem item) {
+        if (item instanceof BookItems) {
+            BookItemsHandler handler = new BookItemsHandler();
+            TreeMap<String, BookItems> books = handler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv");
+            books.put(item.getID(), (BookItems) item);
+            handler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv", books);
         }
 
-        else if(currentItem instanceof ClothingItems) {
-            ClothesItemsHandler clothesHandler = new ClothesItemsHandler() {};
-            TreeMap<String, ClothingItems> clothings = clothesHandler.loadFromCSV(getFilePathForItem(currentItem));
-            clothings.put(currentItem.getID(), (ClothingItems) currentItem);
-            clothesHandler.saveToCSV(getFilePathForItem(currentItem), clothings);
+        else if (item instanceof ClothingItems) {
+            ClothesItemsHandler handler = new ClothesItemsHandler();
+            TreeMap<String, ClothingItems> clothes = handler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Clothes.csv");
+            clothes.put(item.getID(), (ClothingItems) item);
+            handler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Clothes.csv", clothes);
         }
 
-        else if(currentItem instanceof ElectronicItems) {
-            ElectronicItemsHandler electronicHandler = new ElectronicItemsHandler() {};
-            TreeMap<String, ElectronicItems> electronics = electronicHandler.loadFromCSV(getFilePathForItem(currentItem));
-            electronics.put(currentItem.getID(), (ElectronicItems) currentItem);
-            electronicHandler.saveToCSV(getFilePathForItem(currentItem), electronics);
+        else if (item instanceof ElectronicItems) {
+            ElectronicItemsHandler handler = new ElectronicItemsHandler();
+            TreeMap<String, ElectronicItems> electronics = handler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Electronics.csv");
+            electronics.put(item.getID(), (ElectronicItems) item);
+            handler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Electronics.csv", electronics);
         }
 
-        else if(currentItem instanceof GroceryItems) {
-            GroceryItemsHandler groceryHandler = new GroceryItemsHandler() {};
-            TreeMap<String, GroceryItems> groceries = groceryHandler.loadFromCSV(getFilePathForItem(currentItem));
-            groceries.put(currentItem.getID(), (GroceryItems) currentItem);
-            groceryHandler.saveToCSV(getFilePathForItem(currentItem), groceries);
+        else if (item instanceof GroceryItems) {
+            GroceryItemsHandler handler = new GroceryItemsHandler();
+            TreeMap<String, GroceryItems> groceries = handler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Groceries.csv");
+            groceries.put(item.getID(), (GroceryItems) item);
+            handler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Groceries.csv", groceries);
         }
     }
 
@@ -104,14 +121,6 @@ public class InventoryManager{
         }
     }
 
-    private double getTotalValue() {
-        return inventory.values().stream().mapToDouble(AbstractItem::getPrice).sum();
-    }
-
-    private int getTotalQuantity() {
-        return inventory.size();
-    }
-
     public InventoryManager() {
         this.inventory = new TreeMap<>();
         this.loadInventoryFromCSV();
@@ -119,6 +128,14 @@ public class InventoryManager{
 
     public TreeMap<String, AbstractItem> getInventory() {
         return this.inventory;
+    }
+
+    public double getTotalValue() {
+        return inventory.values().stream().mapToDouble(AbstractItem::getPrice).sum();
+    }
+
+    public int getTotalQuantity() {
+        return inventory.size();
     }
 
     public void soldOut(ArrayList<String> idList) {
@@ -133,123 +150,267 @@ public class InventoryManager{
         }
     }
 
+    private void addBookItem(Scanner scanner, int index) {
+        System.out.print("> Insert item[" + (index + 1) + "] name: ");
+        String name = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] price: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] discount: ");
+        double discount = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] author: ");
+        String author = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] genre: ");
+        String genre = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] total pages: ");
+        int totalPages = Integer.parseInt(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] publisher: ");
+        String publisher = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] description: ");
+        String description = scanner.nextLine();
+
+        BookItems book = new BookItems(name, discount, price, author, genre, totalPages, publisher, description);
+        this.inventory.put(book.getID(), book);
+        saveItemToCSV(book);
+    }
+
+    private void addClothingItem(Scanner scanner, int index) {
+        System.out.print("> Insert item[" + (index + 1) + "] name: ");
+        String name = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] price: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] discount: ");
+        double discount = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] brand: ");
+        String brand = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] size: ");
+        String size = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] color: ");
+        String color = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] details: ");
+        String details = scanner.nextLine();
+
+        ClothingItems clothing = new ClothingItems(name, discount, price, brand, size, color, details);
+        this.inventory.put(clothing.getID(), clothing);
+        saveItemToCSV(clothing);
+    }
+
+    private void addElectronicItem(Scanner scanner, int index) {
+        System.out.print("> Insert item[" + (index + 1) + "] name: ");
+        String name = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] price: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] discount: ");
+        double discount = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] brand: ");
+        String brand = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] warranty: ");
+        int warranty = Integer.parseInt(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] details: ");
+        String details = scanner.nextLine();
+
+        ElectronicItems electronics = new ElectronicItems(name, discount, price, brand, warranty, details);
+        this.inventory.put(electronics.getID(), electronics);
+        saveItemToCSV(electronics);
+    }
+
+    private void addGroceryItem(Scanner scanner, int index) {
+        System.out.print("> Insert item[" + (index + 1) + "] name: ");
+        String name = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] price: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] discount: ");
+        double discount = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] description: ");
+        String description = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] weight: ");
+        double weight = Double.parseDouble(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] calories: ");
+        int calories = Integer.parseInt(scanner.nextLine());
+        System.out.print("> Insert item[" + (index + 1) + "] creation date (DD-MM-YYYY): ");
+        String creationDate = scanner.nextLine();
+        System.out.print("> Insert item[" + (index + 1) + "] expiration date (DD-MM-YYYY): ");
+        String expirationDate = scanner.nextLine();
+
+        GroceryItems groceries = new GroceryItems(name, discount, price, description, weight, calories, creationDate, expirationDate);
+        this.inventory.put(groceries.getID(), groceries);
+        saveItemToCSV(groceries);
+    }
+
+    public void loadNewItems() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("------ LOADING NEW ITEMS ------");
+        System.out.print("> Number of items to load: ");
+        int numberOfItems = Integer.parseInt(scanner.nextLine());
+
+        if (numberOfItems <= 0) {
+            System.out.println(">! No items to load.");
+            return;
+        }
+
+        for (int i = 0; i < numberOfItems; i++) {
+            System.out.print("> Insert item category (BOOKS, CLOTHES, ELECTRONICS, GROCERIES): ");
+            String category = scanner.nextLine();
+
+            switch (category.toUpperCase()) {
+                case "BOOKS":
+                    addBookItem(scanner, i);
+                    break;
+                case "CLOTHES":
+                    addClothingItem(scanner, i);
+                    break;
+                case "ELECTRONICS":
+                    addElectronicItem(scanner, i);
+                    break;
+                case "GROCERIES":
+                    addGroceryItem(scanner, i);
+                    break;
+                default:
+                    System.out.println(">! Invalid category. Skipping item.");
+            }
+        }
+        System.out.println("------ END OF LOADING ITEMS ------");
+    }
+
+
     public void setNewDiscount() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("------ NEW DISCOUNT ------");
-        System.out.print("> Insert the category of the product (BOOKS || CLOTHES || ELECTRONICS): ");
+        System.out.print("> Insert the category of the product (BOOKS || CLOTHES || ELECTRONICS || GROCERIES): ");
         String category = scanner.nextLine();
 
         boolean exists = false;
 
         switch (category.toUpperCase()) {
             case "BOOKS": {
-                BookItemsHandler bookItemsHandler = new BookItemsHandler() {};
+                BookItemsHandler bookItemsHandler = new BookItemsHandler();
                 TreeMap<String, BookItems> books = bookItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv");
 
-                System.out.println("------ CHOICE: ALL OR PARTICULAR ONES (CHOSEN BY GENRE) ------");
-                System.out.print("> Type A (for all books no matter the genre) || Type P (for particular genre: ");
+                System.out.println("------ CHOICE: ALL OR PARTICULAR ONES (CHOSEN BY ID OR GENRE) ------");
+                System.out.print("> Type A (for all books) || Type P (for particular ones by ID): ");
                 String choice = scanner.nextLine();
 
-                if(choice.equals("A")) {
+                if (choice.equalsIgnoreCase("A")) {
                     System.out.print("> Insert the new discount [0, 1): ");
                     double newDiscount = Double.parseDouble(scanner.nextLine());
 
-                    if(0 <= newDiscount && newDiscount < 1) {
-                        for(Map.Entry<String, BookItems> entry : books.entrySet())
-                            entry.getValue().setDiscount(newDiscount);
-
-                        bookItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.cvs", books);
-                    }
-
-                    else
-                        throw new IllegalArgumentException(">! Invalid discount - must be [0, 1), [InventoryManager, setNewDiscount() --> case BOOKS].");
-                }
-
-                else if(choice.equals("P")) {
-                    System.out.print("> Insert the genre of the book/s: ");
-                    String title = scanner.nextLine();
-
-                    if("FANTASY".equalsIgnoreCase(title) || "SCIENCE_FICTION".equalsIgnoreCase(title) || "MYSTERY".equalsIgnoreCase(title) ||
-                            "NON_FICTION".equalsIgnoreCase(title) || "BIOGRAPHY".equalsIgnoreCase(title)) {
-                        for(Map.Entry<String, BookItems> entry : books.entrySet()) {
-                            if(entry.getValue().getGenre().toString().equalsIgnoreCase(title)) {
-                                System.out.println("> Insert the new discount [0, 1): ");
-                                double newDiscount = Double.parseDouble(scanner.nextLine());
-                                entry.getValue().setDiscount(newDiscount);
-                                exists = true;
-                            }
+                    if (0 <= newDiscount && newDiscount < 1) {
+                        for (BookItems book : books.values()) {
+                            book.setDiscount(newDiscount);
+                            exists = true;
                         }
 
-                        bookItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.cvs", books);
+                        bookItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv", books);
+                    }
+                }
+
+                else if (choice.equalsIgnoreCase("P")) {
+                    System.out.print("> Insert the ID of the book: ");
+                    String id = scanner.nextLine();
+
+                    if (books.containsKey(id)) {
+                        System.out.print("> Insert the new discount [0, 1): ");
+                        double newDiscount = Double.parseDouble(scanner.nextLine());
+
+                        if (0 <= newDiscount && newDiscount < 1) {
+                            books.get(id).setDiscount(newDiscount);
+                            exists = true;
+
+                            bookItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv", books);
+                        }
                     }
 
                     else
-                        throw new IllegalArgumentException(">! Invalid genre given, [InventoryManager, setNewDiscount() --> case BOOKS].");
+                        throw new IllegalArgumentException(">! Book with this ID was not found, [InventoryManager, setNewDiscount() --> case BOOKS].");
                 }
 
                 break;
             }
 
             case "CLOTHES": {
-                ClothesItemsHandler clothesItemsHandler = new ClothesItemsHandler() {};
+                ClothesItemsHandler clothesItemsHandler = new ClothesItemsHandler();
                 TreeMap<String, ClothingItems> clothes = clothesItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Clothes.csv");
-                System.out.print("> Insert the which brand to have a new discount [0, 1): ");
-                String brand = scanner.nextLine();
 
-                if(brand.equalsIgnoreCase("ZARA") || brand.equalsIgnoreCase("NIKE") || brand.equalsIgnoreCase("TOMMY_HILFIGER")) {
+                System.out.print("> Insert the ID of the clothing item: ");
+                String id = scanner.nextLine();
+
+                if (clothes.containsKey(id)) {
                     System.out.print("> Insert the new discount [0, 1): ");
                     double newDiscount = Double.parseDouble(scanner.nextLine());
 
-                    if(0 <= newDiscount && newDiscount < 1) {
-                        for(Map.Entry<String, ClothingItems> entry : clothes.entrySet()) {
-                            if(entry.getValue().getBrand().toString().equalsIgnoreCase(brand)){
-                                entry.getValue().setDiscount(newDiscount);
+                    if (0 <= newDiscount && newDiscount < 1) {
+                        for (ClothingItems clothing : clothes.values()) {
+                            if (clothing.getID().equalsIgnoreCase(id)) {
+                                clothing.setDiscount(newDiscount);
                                 exists = true;
                             }
                         }
 
                         clothesItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Clothes.csv", clothes);
                     }
-
-                    else
-                        throw new IllegalArgumentException(">! Invalid clothing brand given, [InventoryManager, setNewDiscount() --> case CLOTHES].");
                 }
+
+                else
+                    throw new IllegalArgumentException(">! Clothing item with this ID was not found, [InventoryManager, setNewDiscount() --> case CLOTHES].");
 
                 break;
             }
 
             case "ELECTRONICS": {
-                ElectronicItemsHandler electronicItemsHandler = new ElectronicItemsHandler() {};
+                ElectronicItemsHandler electronicItemsHandler = new ElectronicItemsHandler();
                 TreeMap<String, ElectronicItems> electronics = electronicItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Electronics.csv");
-                System.out.print("> Insert the which company to have a new discount [0, 1): ");
-                String company = scanner.nextLine();
 
-                if(company.equalsIgnoreCase("APPLE") || company.equalsIgnoreCase("PHILIPS") || company.equalsIgnoreCase("SAMSUNG")) {
+                System.out.print("> Insert the ID of the electronic item: ");
+                String id = scanner.nextLine();
+
+                if (electronics.containsKey(id)) {
                     System.out.print("> Insert the new discount [0, 1): ");
                     double newDiscount = Double.parseDouble(scanner.nextLine());
 
-                    if(0 <= newDiscount && newDiscount < 1) {
-                        for(Map.Entry<String, ElectronicItems> entry : electronics.entrySet()) {
-                            if(entry.getValue().getBrand().toString().equalsIgnoreCase(company)) {
-                                entry.getValue().setDiscount(newDiscount);
+                    if (0 <= newDiscount && newDiscount < 1) {
+                        for (ElectronicItems electronic : electronics.values()) {
+                            if (electronic.getID().equalsIgnoreCase(id)) {
+                                electronic.setDiscount(newDiscount);
                                 exists = true;
                             }
                         }
 
                         electronicItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Electronics.csv", electronics);
                     }
-
-                    else
-                        throw new IllegalArgumentException(">! Invalid electronics company given, [InventoryManager, setNewDiscount() --> case ELECTRONICS].");
                 }
+
+                else
+                    throw new IllegalArgumentException(">! Electronic item with this ID was not found, [InventoryManager, setNewDiscount() --> case ELECTRONICS].");
 
                 break;
             }
 
-            default: throw new IllegalStateException(">! Invalid category of product given, [InventoryManager, setNewDiscount() --> case default].");
-        }
+            case "GROCERIES": {
+                GroceryItemsHandler groceryItemsHandler = new GroceryItemsHandler();
+                TreeMap<String, GroceryItems> groceries = groceryItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Groceries.csv");
 
-        System.out.println(exists ? "------ NEW DISCOUNT SUCCESSFULLY APPLIED ------" : "------ NO DISCOUNT APPLIED ------");
+                System.out.print("> Insert the ID of the grocery item: ");
+                String id = scanner.nextLine();
+
+                if (groceries.containsKey(id)) {
+                    System.out.print("> Insert the new discount [0, 1): ");
+                    double newDiscount = Double.parseDouble(scanner.nextLine());
+
+                    if (0 <= newDiscount && newDiscount < 1) {
+                        groceries.get(id).setDiscount(newDiscount);
+                        groceryItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Groceries.csv", groceries);
+                        exists = true;
+                    }
+                }
+
+                else
+                    throw new IllegalArgumentException(">! Grocery item with this ID was not found, [InventoryManager, setNewDiscount() --> case GROCERIES].");
+
+                break;
+            }
+
+            default:
+                throw new IllegalStateException(">! Invalid category of product given, [InventoryManager, setNewDiscount() --> case default].");
+        }
     }
 
     public void setNewPrice() {
@@ -259,28 +420,24 @@ public class InventoryManager{
         String choice = scanner.nextLine();
         boolean exists = false;
 
-        switch (choice) {
+        switch (choice.toUpperCase()) {
             case "B": {
-                BookItemsHandler bookItemsHandler = new BookItemsHandler() {};
+                BookItemsHandler bookItemsHandler = new BookItemsHandler();
                 TreeMap<String, BookItems> books = bookItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv");
 
-                System.out.print("> Insert title: ");
-                String title = scanner.nextLine();
+                System.out.print("> Insert the ID of the book: ");
+                String id = scanner.nextLine().trim();
                 System.out.print("> Insert the new price for this book: ");
-                double newPrice = Double.parseDouble(scanner.nextLine());
+                double newPrice = Double.parseDouble(scanner.nextLine().trim());
 
-                for(Map.Entry<String, BookItems> entry : books.entrySet()) {
-                    if(entry.getValue().getName().equalsIgnoreCase(title)) {
-                        entry.getValue().setPrice(newPrice);
-                        exists = true;
-                    }
+                if (books.containsKey(id)) {
+                    books.get(id).setPrice(newPrice);
+                    bookItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv", books);
+                    exists = true;
                 }
 
                 if(!exists)
                     System.out.println(">! Item with this title was not found, [InventoryManager, setNewPrice() --> case BOOKS].");
-
-                else
-                    bookItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Books.csv", books);
 
                 break;
             }
@@ -289,87 +446,66 @@ public class InventoryManager{
                 ClothesItemsHandler clothesItemsHandler = new ClothesItemsHandler() {};
                 TreeMap<String, ClothingItems> clothes = clothesItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Clothes.csv");
 
-                System.out.print("> Insert clothing category (T-Shirt || Jeans || Jackets || Shoes): ");
-                String category = scanner.nextLine();
-                System.out.print("> Insert clothing size (XS || S || M || L || XL): ");
-                String size = scanner.nextLine();
-                System.out.print("> Insert price for this clothing: ");
-                double price = Double.parseDouble(scanner.nextLine());
+                System.out.print("> Insert the ID of the clothing item: ");
+                String id = scanner.nextLine().trim();
+                System.out.print("> Insert the new price for this clothing item: ");
+                double newPrice = Double.parseDouble(scanner.nextLine().trim());
 
-                if(("TSHIRT".equalsIgnoreCase(category) || "JEANS".equalsIgnoreCase(category) || "JACKETS".equalsIgnoreCase(category) || "SHOES".equalsIgnoreCase(category)) &&
-                    "XS".equalsIgnoreCase(size) || "S".equalsIgnoreCase(size) || "M".equalsIgnoreCase(size) || "XL".equalsIgnoreCase(size)) {
-                    for(Map.Entry<String, ClothingItems> entry : clothes.entrySet()) {
-                        if(entry.getValue().getName().equalsIgnoreCase(category) && entry.getValue().getSize().equalsIgnoreCase(size)) {
-                            entry.getValue().setPrice(price);
-                            exists = true;
-                        }
-                    }
-
+                if (clothes.containsKey(id)) {
+                    clothes.get(id).setPrice(newPrice);
                     clothesItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Clothes.csv", clothes);
+                    exists = true;
                 }
 
-                else
-                    throw new IllegalStateException(">! Invalid (clothing category || size) given, [InventoryManager, setNewPrice() --> case CLOTHES].");
+                if(!exists)
+                    throw new IllegalStateException(">! Item with this ID was not found, [InventoryManager, setNewPrice() --> case CLOTHES].");
 
                 break;
             }
 
             case "E": {
-                ElectronicItemsHandler electronicsHandler = new ElectronicItemsHandler() {};
+                ElectronicItemsHandler electronicsHandler = new ElectronicItemsHandler();
                 TreeMap<String, ElectronicItems> electronics = electronicsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Electronics.csv");
 
-                System.out.print("> Insert the name of the electronic item: ");
-                String name = scanner.nextLine();
-                System.out.print("> Insert the brand company of the electronic item: ");
-                String company = scanner.nextLine();
-                System.out.print("> Insert the new price of the electronic item: ");
-                double price = Double.parseDouble(scanner.nextLine());
+                System.out.print("> Insert the ID of the electronic item: ");
+                String id = scanner.nextLine().trim();
+                System.out.print("> Insert the new price for this electronic item: ");
+                double newPrice = Double.parseDouble(scanner.nextLine().trim());
 
-                if("APPLE".equalsIgnoreCase(name) || "PHILIPS".equalsIgnoreCase(name) || "SAMSUNG".equalsIgnoreCase(name)) {
-                    for(Map.Entry<String, ElectronicItems> entry : electronics.entrySet()) {
-                        if(entry.getValue().getBrand().toString().equalsIgnoreCase(company) && entry.getValue().getName().equalsIgnoreCase(name)) {
-                            entry.getValue().setPrice(price);
-                            exists = true;
-                        }
-                    }
-
+                if (electronics.containsKey(id)) {
+                    electronics.get(id).setPrice(newPrice);
                     electronicsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Electronics.csv", electronics);
+                    exists = true;
                 }
 
-                else
-                    throw new IllegalArgumentException(">! Invalid (name || brand company) inserted, [InventoryManager, setNewPrice() --> case ELECTRONICS].");
+                if(!exists)
+                    throw new IllegalArgumentException(">! Item with this ID was not found, [InventoryManager, setNewPrice() --> case ELECTRONICS].");
 
                 break;
             }
 
             case "G": {
                 GroceryItemsHandler groceryItemsHandler = new GroceryItemsHandler() {};
-                TreeMap<String, GroceryItems> groceries = groceryItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/GroceryItems.csv");
+                TreeMap<String, GroceryItems> groceries = groceryItemsHandler.loadFromCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Groceries.csv");
 
-                System.out.print("> Insert the name of the grocery item: ");
-                String name = scanner.nextLine();
+                System.out.print("> Insert the ID of the grocery item: ");
+                String id = scanner.nextLine().trim();
                 System.out.print("> Insert the new price of the grocery item: ");
-                double price = Double.parseDouble(scanner.nextLine());
+                double price = Double.parseDouble(scanner.nextLine().trim());
 
-                for(Map.Entry<String, GroceryItems> entry : groceries.entrySet()) {
-                    if(entry.getValue().getName().equalsIgnoreCase(name)) {
-                        entry.getValue().setPrice(price);
-                        exists = true;
-                    }
+                if (groceries.containsKey(id)) {
+                    groceries.get(id).setPrice(price); // Update the price
+                    groceryItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/Groceries.csv", groceries);
+                    exists = true;
                 }
 
-                if(exists)
-                    groceryItemsHandler.saveToCSV("/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/items/GroceryItems.csv", groceries);
-
-                else
-                    throw new IllegalArgumentException(">! Invalid name inserted, [InventoryManager, setNewPrice() --> case GROCERIES].");
+                if (!exists)
+                    throw new IllegalArgumentException(">! Item with this ID was not found, [InventoryManager, setNewPrice() --> case GROCERIES].");
 
                 break;
             }
 
-            default: {
-                throw new IllegalArgumentException(">! Invalid product category, [InventoryManager, setNewPrice() --> case default].");
-            }
+            default: throw new IllegalArgumentException(">! Invalid id given, [InventoryManager, setNewPrice() --> case default].");
         }
     }
 
@@ -382,115 +518,7 @@ public class InventoryManager{
 
         switch (action.toLowerCase()) {
             case "load":
-                System.out.println("------ LOADING NEW ITEMS IN THE INVENTORY ------");
-                System.out.print("> Number of items to load: ");
-                int numberOfItems = Integer.parseInt(scanner.nextLine());
-
-                if (numberOfItems <= 0) {
-                    System.out.println("[ No Items Loaded -> InventoryManager, updateInventory() ]");
-                    break;
-                }
-
-                for (int i = 0; i < numberOfItems; i++) {
-                    System.out.print("> Insert item[" + (i + 1) + "] category: ");
-                    String itemCategory = scanner.nextLine();
-
-                    switch (itemCategory.toUpperCase()) {
-                        case "BOOKS": {
-                            System.out.print("> Insert item[" + (i + 1) + "] name: ");
-                            String name = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] price: ");
-                            double price = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] discount: ");
-                            double discount = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] author: ");
-                            String author = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] genre: ");
-                            String genre = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] total pages: ");
-                            int totalPages = Integer.parseInt(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] publisher: ");
-                            String publisher = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] description: ");
-                            String description = scanner.nextLine();
-
-                            AbstractItem currentItem = new BookItems(name, discount, price, author, genre, totalPages, publisher, description);
-                            this.inventory.put(currentItem.getID(), currentItem);
-//                            saveToCSV(currentItem);
-                            break;
-                        }
-
-                        case "CLOTHES": {
-                            System.out.print("> Insert item[" + (i + 1) + "] name: ");
-                            String name = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] price: ");
-                            double price = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] discount: ");
-                            double discount = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] brand: ");
-                            String brand = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] size: ");
-                            String size = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] color: ");
-                            String color = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] details: ");
-                            String details = scanner.nextLine();
-
-                            AbstractItem currentItem = new ClothingItems(name, discount, price, brand, size, color, details);
-                            this.inventory.put(currentItem.getID(), currentItem);
-                            saveToCSV(currentItem);
-                            break;
-                        }
-
-                        case "ELECTRONICS": {
-                            System.out.print("> Insert item[" + (i + 1) + "] name: ");
-                            String name = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] price: ");
-                            double price = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] discount: ");
-                            double discount = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] brand: ");
-                            String brand = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] warranty: ");
-                            int warranty = Integer.parseInt(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] details: ");
-                            String details = scanner.nextLine();
-
-                            AbstractItem currentItem = new ElectronicItems(name, discount, price, brand, warranty, details);
-                            this.inventory.put(currentItem.getID(), currentItem);
-                            saveToCSV(currentItem);
-                            break;
-                        }
-
-                        case "GROCERIES": {
-                            System.out.print("> Insert item[" + (i + 1) + "] name: ");
-                            String name = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] price: ");
-                            double price = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] discount: ");
-                            double discount = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] description: ");
-                            String description = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] weight: ");
-                            double weight = Double.parseDouble(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] calories: ");
-                            int calories = Integer.parseInt(scanner.nextLine());
-                            System.out.print("> Insert item[" + (i + 1) + "] creation date (DD-MM-YYYY): ");
-                            String creationDate = scanner.nextLine();
-                            System.out.print("> Insert item[" + (i + 1) + "] expiration date (DD-MM-YYYY): ");
-                            String expirationDate = scanner.nextLine();
-
-                            AbstractItem currentItem = new GroceryItems(name, discount, price, description, weight, calories, creationDate, expirationDate);
-                            this.inventory.put(currentItem.getID(), currentItem);
-                            saveToCSV(currentItem);
-                            break;
-                        }
-
-                        default:
-                            System.out.println(">! This item will not be added due to invalid category, [InventoryManager, updateInventory()].");
-                    }
-                }
-                System.out.println("------ END OF LOADING NEW ITEMS ------");
+                loadNewItems();
                 break;
 
             case "discount":
@@ -504,8 +532,8 @@ public class InventoryManager{
             default:
                 throw new IllegalArgumentException(">! Invalid action: " + action + ", [Admin, updateInventory()].");
         }
-        System.out.println("--------------------------------");
     }
+
 
     public AbstractItem findItem(String id) {
         if (!inventory.containsKey(id))
