@@ -14,19 +14,18 @@ public class UserHandler extends AbstractCSVHandler<AbstractUser> {
 
         File file = new File(filePath);
         if (!file.exists()) {
-            try {
-                file.createNewFile();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write("Role|FirstName|FamilyName|Email|Password");
+                writer.newLine();
             } catch (IOException e) {
-                System.out.print(">! Error while creating loading file, [UserHandler, loadFromCSV()]. ");
-                System.out.println(e.getMessage());
+                throw new RuntimeException(">! Error while creating UsersDB.csv, [UserHandler, loadFromCSV()].", e);
             }
             System.out.println("[ UsersDB.csv created -> UserHandler, loadFromCSV() ]");
         }
 
         TreeMap<String, AbstractUser> users = new TreeMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-
+            String line  = reader.readLine();;
             while ((line = reader.readLine()) != null) {
                 String[] components = line.split("\\|");
                 try {
@@ -36,14 +35,16 @@ public class UserHandler extends AbstractCSVHandler<AbstractUser> {
                     String email = components[3];
                     String password = components[4];
 
-                    AbstractUser user = null;
-                    if ("ADMIN".equalsIgnoreCase(role))
+                    AbstractUser user;
+                    if ("ADMIN".equalsIgnoreCase(role)) {
                         user = new Admin(firstName, familyName, email, password, role);
+                        users.put(email, user);
+                    }
 
-                    else if ("CUSTOMER".equalsIgnoreCase(role))
+                    else if ("CUSTOMER".equalsIgnoreCase(role)) {
                         user = new Customer(firstName, familyName, email, password, role);
-
-                    users.put(email, user);
+                        users.put(email, user);
+                    }
                 } catch (IllegalStateException e) {
                     System.out.println(">! Error while reading csv file, [UserHandler, loadFromCSV()]. " + e.getMessage());
                 }
@@ -61,24 +62,20 @@ public class UserHandler extends AbstractCSVHandler<AbstractUser> {
             throw new IllegalArgumentException(">! File path cannot be null or empty, [UserHandler, saveToCSV()].");
 
         File file = new File(filename);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("Role|FirstName|FamilyName|Email|Password");
+            writer.newLine();
 
-        TreeMap<String, AbstractUser> existingUsers = loadFromCSV(filename);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            if (!file.exists() || file.length() == 0) {
-                writer.write("Role|FirstName|FamilyName|Email|Password");
-                writer.newLine();
-            }
-
-            for (AbstractUser user : users.values()) {
-                if (!existingUsers.containsKey(user.getEmail())) {
+            users.forEach((email, user) -> {
+                try {
                     writer.write(user.getRole() + "|" + user.getFirstName() + "|" + user.getFamilyName() + "|" + user.getEmail() + "|" + user.getPassword());
                     writer.newLine();
+                } catch (IOException e) {
+                    System.out.println(">! Error while writing to UsersDB.csv [UserHandler, saveToCSV()].");
                 }
-            }
+            });
         } catch (IOException e) {
-            System.out.print(">! Error while saving in UsersDB.csv, [UserHandler, saveToCSV()].");
-            System.out.println(e.getMessage());
+            System.out.println(">! Error while saving UsersDB.csv [UserHandler, saveToCSV()].");
         }
     }
 
@@ -87,13 +84,15 @@ public class UserHandler extends AbstractCSVHandler<AbstractUser> {
         if(filename == null || filename.isEmpty())
             throw new IllegalArgumentException(">! File path cannot be null or empty, [UserHanler, removeFromCSV()].");
 
+        if (email == null || email.isEmpty())
+            throw new IllegalArgumentException(">! Email cannot be null or empty, [UserHandler, removeFromCSV()].");
+
         TreeMap<String, AbstractUser> users = loadFromCSV(filename);
-        if(users.containsKey(email)) {
-            users.remove(email);
+
+        if(users.remove(email) != null)
             saveToCSV(filename, users);
-        }
 
         else
-            throw new IllegalArgumentException(">! User does not exist, [UserHanler, removeFromCSV()].");
+            throw new IllegalArgumentException(">! User not found in CSV: " + email + ", [UserHandler, removeFromCSV()].");
     }
 }
