@@ -9,10 +9,17 @@ import java.util.TreeMap;
 
 public class Login {
     private String username, password;
-    private UserHandler userHanler = new UserHandler() {};
-
+    private UserHandler userHandler = new UserHandler();
     private final String FILE_PATH = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/user/UsersDB.csv";
-    private TreeMap<String, AbstractUser> users = userHanler.loadFromCSV(FILE_PATH);
+    private TreeMap<String, AbstractUser> users;
+
+    public Login() {
+        reloadUsers();
+    }
+
+    public void reloadUsers() {
+        this.users = userHandler.loadFromCSV(FILE_PATH);
+    }
 
     public void login(String email, String password) {
         if (email == null || email.isEmpty() || password == null || password.isEmpty())
@@ -43,14 +50,10 @@ public class Login {
 
         AbstractUser user = new Customer(firstName, familyName, email, password, role);
         users.put(email, user);
-
-        TreeMap<String, AbstractUser> newUser = new TreeMap<>();
-        newUser.put(email, user);
-        userHanler.saveToCSV(FILE_PATH, newUser);
+        userHandler.saveToCSV(FILE_PATH, users);
 
         System.out.println("------ REGISTER SUCCESS ------");
     }
-
 
     public AbstractUser getUser(String email) {
         if (email == null || email.isEmpty())
