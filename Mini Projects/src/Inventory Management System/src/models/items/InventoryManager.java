@@ -571,6 +571,27 @@ public class InventoryManager{
     }
 
     public void clearInventory() {
+        this.inventory.forEach((id, item) -> {
+            String currentFile = getFilePathForItem(item);
+
+            BookItemsHandler bookItemsHandler = new BookItemsHandler();
+            ClothesItemsHandler clothesItemsHandler = new ClothesItemsHandler();
+            ElectronicItemsHandler electronicsHandler = new ElectronicItemsHandler();
+            GroceryItemsHandler groceryItemsHandler = new GroceryItemsHandler();
+
+            if(item instanceof BookItems)
+                bookItemsHandler.removeFromCSV(currentFile, item.getID());
+
+            else if(item instanceof ClothingItems)
+                clothesItemsHandler.removeFromCSV(currentFile, item.getID());
+
+            else if (item instanceof ElectronicItems)
+                electronicsHandler.removeFromCSV(currentFile, item.getID());
+
+            else if (item instanceof GroceryItems)
+                groceryItemsHandler.removeFromCSV(currentFile, item.getID());
+        });
+
         this.inventory.clear();
         System.out.println("----- INVENTORY CLEARED ------");
     }
