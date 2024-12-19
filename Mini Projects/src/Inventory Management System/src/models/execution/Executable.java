@@ -71,6 +71,7 @@ public class Executable {
 
         try {
             loginManager.register(firstName, familyName, email, password, role);
+            this.loginManager.reloadUsers();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -82,42 +83,51 @@ public class Executable {
         while (!exit) {
             System.out.println();
             System.out.println("------ ADMIN MENU ------");
-            System.out.println("1. Update Inventory");
-            System.out.println("2. Clear All Inventory Items");
+            System.out.println("1. Look Through Items");
+            System.out.println("2. Filter Inventory by Category");
             System.out.println("3. Find Item by ID");
-            System.out.println("4. Filter Inventory by Category");
-            System.out.println("5. Look Through Items");
-            System.out.println("6. Print Info for Admin");
-            System.out.println("7. Delete Admin Account");
-            System.out.println("8. View Total Inventory Value");
-            System.out.println("9. View Total Inventory Quantity");
+            System.out.println("4. Update Inventory");
+            System.out.println("5. Clear All Inventory Items");
+            System.out.println("6. View Total Inventory Quantity");
+            System.out.println("7. View Total Inventory Value");
+            System.out.println("8. Print Info for Admin");
+            System.out.println("9. Delete Admin Account");
             System.out.println("10. Logout");
             System.out.print("> Choose an option: ");
             String choice = scanner.nextLine();
             System.out.println();
 
             switch (choice) {
-                case "1" -> admin.updateInventory();
-                case "2" -> admin.clearAllItems();
+                case "1" -> admin.itemsLookThru();
+                case "2" -> filterByCategory(admin, scanner);
                 case "3" -> findItem(admin, scanner);
-                case "4" -> filterByCategory(admin, scanner);
-                case "5" -> admin.itemsLookThru();
-                case "6" -> admin.printInfoForMe();
-                case "7" -> {
-                    admin.deleteMe();
-                    exit = true;
+                case "4" -> admin.updateInventory();
+                case "5" -> admin.clearAllItems();
+
+                case "6" -> {
+                    int totalQuantity = admin.getTotalQuantity();
+                    System.out.println("------ TOTAL INVENTORY QUANTITY ------");
+                    System.out.printf("> Total quantity: %d%n", totalQuantity);
                 }
 
-                case "8" -> {
+                case "7" -> {
                     double totalValue = admin.getTotalValue();
                     System.out.println("------ TOTAL INVENTORY VALUE ------");
                     System.out.printf("> Total value: %.2f%n", totalValue);
                 }
 
+                case "8" -> admin.printInfoForMe();
+
                 case "9" -> {
-                    int totalQuantity = admin.getTotalQuantity();
-                    System.out.println("------ TOTAL INVENTORY QUANTITY ------");
-                    System.out.printf("> Total quantity: %d%n", totalQuantity);
+                    try {
+                        admin.deleteMe();
+                        this.loginManager.reloadUsers();
+                        exit = true;
+
+                        System.out.println("------ RETURNING TO LOGIN MENU ------");
+                    } catch (Exception e) {
+                        System.out.println(">! Error during account deletion: " + e.getMessage());
+                    }
                 }
 
                 case "10" -> {
@@ -129,7 +139,6 @@ public class Executable {
             }
         }
     }
-
 
     private void customerMenu(Customer customer, Scanner scanner) {
         boolean exit = false;
