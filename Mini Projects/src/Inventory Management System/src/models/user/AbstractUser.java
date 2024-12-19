@@ -1,6 +1,5 @@
 package models.user;
 
-import models.interfaces_for_items.Categorizable;
 import models.items.AbstractItem;
 import models.items.InventoryManager;
 import models.user.handler_for_user.UserHandler;
@@ -8,6 +7,7 @@ import models.user.handler_for_user.UserHandler;
 import java.util.TreeMap;
 
 public abstract class AbstractUser implements Role {
+    protected final String PATH_FILE = "/Users/vanessa.pashova/Desktop/Sirma Academy 24/Mini Projects/src/Inventory Management System/src/csv_files/user/UsersDB.csv";
     protected String firstName, familyName, email, password;
     protected Role.RoleType role;
 
@@ -165,12 +165,18 @@ public abstract class AbstractUser implements Role {
     }
 
     public void deleteMe() {
+        UserHandler userHandler = new UserHandler();
+        TreeMap<String, AbstractUser> users = userHandler.loadFromCSV(PATH_FILE);
+
+        if (!users.containsKey(this.email))
+            throw new IllegalArgumentException(">! User not found: " + this.email + ", [AbstractUser, deleteMe()].");
+
+        userHandler.removeFromCSV(PATH_FILE, this.email);
+
         this.firstName = null;
         this.familyName = null;
         this.email = null;
         this.password = null;
         this.role = null;
-
-        System.out.println("------ ACCOUNT IS DELETED ------");
     }
 }
