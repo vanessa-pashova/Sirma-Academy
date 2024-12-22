@@ -1,5 +1,6 @@
 package models.user;
 
+import com.sun.source.tree.Tree;
 import models.credit_cards.handlers.CardHandler;
 import models.credit_cards.payment_systems.AbstractCard;
 import models.credit_cards.payment_systems.AmericanExpress;
@@ -8,7 +9,10 @@ import models.credit_cards.payment_systems.Visa;
 import models.handlers_for_purchase.FavouritesHandler;
 import models.handlers_for_purchase.PreviousPurchasesHandler;
 import models.items.AbstractItem;
+import models.items.InventoryManager;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -25,7 +29,24 @@ public class Customer extends AbstractUser{
     private TreeMap<String, AbstractItem> currentPurchase;
     private AbstractCard card;
 
-    public void loadPreviousPurchases() {
+    InventoryManager inventoryManager = new InventoryManager();
+
+    public void locateCard() {
+        TreeMap<String, AbstractCard> cards = cardHandler.loadCards();
+
+        boolean cardFound = false;
+        for (AbstractCard card : cards.values()) {
+            if (card.getEmail().equalsIgnoreCase(this.email) && card.getFirstName().equalsIgnoreCase(this.firstName) && card.getFamilyName().equalsIgnoreCase(this.familyName)) {
+                this.card = card;
+                cardFound = true;
+            }
+        }
+
+        if (!cardFound)
+            this.card = null;
+    }
+
+    private void loadPreviousPurchases() {
         try {
             previousPurchases = previousPurchasesHandler.loadPreviousPurchases();
         } catch (Exception e) {
@@ -34,7 +55,7 @@ public class Customer extends AbstractUser{
         }
     }
 
-    public void loadFavourites() {
+    private void loadFavourites() {
         if (this.favourites == null)
             this.favourites = new TreeMap<>();
 
@@ -48,6 +69,10 @@ public class Customer extends AbstractUser{
 
     public Customer(String firstName, String familyName, String email, String password, String role) {
         super(firstName, familyName, email, password, role);
+        this.locateCard();
+        this.favourites = new TreeMap<>();
+        this.previousPurchases = new TreeMap<>();
+        this.currentPurchase = new TreeMap<>();
     }
 
     public TreeMap<String, AbstractItem> getFavourites() {
@@ -67,15 +92,20 @@ public class Customer extends AbstractUser{
     }
 
     public void addCard(String number, String expiryDate, String ccv, String cardType, double amount) {
-        switch (cardType) {
-            case "Visa" -> this.card = new Visa(this.firstName, this.familyName, number, expiryDate, ccv, cardType, amount);
-            case "MasterCard" -> this.card = new MasterCard(this.firstName, this.familyName, number, expiryDate, ccv, cardType, amount);
-            case "AmericanExpress" -> this.card = new AmericanExpress(this.firstName, this.familyName, number, expiryDate, ccv, cardType, amount);
-            default -> throw new IllegalStateException(">! Invalid card type, [User, addCard()].");
+        if(this.card == null) {
+            switch (cardType) {
+                case "Visa" -> this.card = new Visa(this.firstName, this.familyName, this.email, number, expiryDate, ccv, cardType, amount);
+                case "MasterCard" -> this.card = new MasterCard(this.firstName, this.familyName, this.email, number, expiryDate, ccv, cardType, amount);
+                case "AmericanExpress" -> this.card = new AmericanExpress(this.firstName, this.familyName, this.email, number, expiryDate, ccv, cardType, amount);
+                default -> throw new IllegalStateException(">! Invalid card type, [User, addCard()].");
+            }
+
+            CardHandler cardHandler = new CardHandler();
+            cardHandler.addCard(this.card);
         }
 
-        CardHandler cardHandler = new CardHandler();
-        cardHandler.addCard(this.card);
+        else
+            throw new IllegalArgumentException(">! Card already exists, [User, addCard()].");
     }
 
     public void checkBalance() {
@@ -93,13 +123,8 @@ public class Customer extends AbstractUser{
         System.out.print("> Enter amount to add: ");
         try {
             double amount = Double.parseDouble(scanner.nextLine());
-            if (amount <= 0) {
-                System.out.println(">! Invalid amount. Please enter a positive value.");
-                return;
-            }
-
             customer.getCard().setBalance(customer.getCard().getBalance() + amount);
-            System.out.println("------ MONEY ADDED SUCCESSFULLY ------");
+            cardHandler.saveCards();
             customer.checkBalance();
         } catch (NumberFormatException e) {
             System.out.println(">! Invalid input. Please enter a numeric value.");
@@ -111,7 +136,7 @@ public class Customer extends AbstractUser{
             throw new IllegalArgumentException(">! Item cannot be null, [User, addToFavourites()].");
 
         this.favourites.put(item.getID(), item);
-        favouritesHandler.saveToCSV(FAVOURITES_FILE, favourites);
+        favouritesHandler.saveToCSV(FAVOURITES_FILE, favourites, this.email);
     }
 
     public void printFavourites() {
@@ -160,7 +185,7 @@ public class Customer extends AbstractUser{
 
         System.out.println("------ CURRENT PURCHASE ------");
         this.currentPurchase.forEach((id, item) -> {
-            System.out.println("ID: " + id + " | Name: " + item.getName() + " | Price: " + item.getPrice() + "|" + item.getDiscount());
+            System.out.println("ID: " + id + " | Category: " + item.getCategory() + " | Name: " + item.getName() + " | Price: " + item.getPrice() + " | " + item.getDiscount());
         });
         System.out.println("--------------------------------");
     }
@@ -180,28 +205,44 @@ public class Customer extends AbstractUser{
         System.out.println("--------------------------------");
     }
 
-
     public void buyItems() {
+        if (this.card == null) {
+            System.out.println(">! No card associated with this account. Cannot proceed with the purchase.");
+            return;
+        }
+
         System.out.println("------ LET'S SEE IF YOUR BALANCE IS ENOUGH :) ------");
         int quantity = 0;
-        for (AbstractItem item : this.currentPurchase.values()) {
-            if (this.card.getBalance() >= item.getPrice()) {
-                previousPurchases.put(item.getID(), item);
-                previousPurchasesHandler.saveToCSV(PREVIOUS_PURCHASES_FILE, previousPurchases);
 
-                currentPurchase.remove(item.getID());
+        Iterator<Map.Entry<String, AbstractItem>> iterator = this.currentPurchase.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, AbstractItem> entry = iterator.next();
+            AbstractItem item = entry.getValue();
+
+            if (this.card.getBalance() >= item.getPrice()) {
+                if (this.previousPurchases == null)
+                    this.previousPurchases = new TreeMap<>();
+
+                previousPurchases.put(item.getID(), item);
+                previousPurchasesHandler.saveToCSV(PREVIOUS_PURCHASES_FILE, previousPurchases, this.email);
+
+                iterator.remove();
+                inventoryManager.removeFromCSV(item);
 
                 this.card.setBalance(this.card.getBalance() - item.getPrice());
-                cardHandler.sendMoney(this.card.getNumber(), item.getPrice());
+                cardHandler.saveCards();
 
                 quantity++;
-            } else {
+            }
+
+            else {
                 System.out.println(">! You ran out of money, you bought " + quantity + " item(s).");
                 break;
             }
-
         }
 
+        inventoryManager.loadInventoryFromCSV();
         System.out.println(quantity > 0 ? "------ THANK YOU FOR THE PURCHASE ------" : "---------- TILL NEXT TIME ----------");
     }
 
