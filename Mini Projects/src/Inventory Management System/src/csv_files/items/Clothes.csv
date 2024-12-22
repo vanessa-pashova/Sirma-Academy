@@ -1,13 +1,13 @@
 ID|Name|Price|Discount|Category|Brand|Size|Color|Details
-C-1|T-shirt|25.99|0|CLOTHING|NIKE|M|Blue|100% Cotton
-C-10|Shirt|60.00|0|CLOTHING|ZARA|XL|Green|Recycled Cotton and Polyester
-C-11|Coat|150.00|0|CLOTHING|TOMMY_HILFIGER|M|Blue|Genuine Leather
-C-12|Trainers|90.00|0|CLOTHING|NIKE|S|Black|High-Quality Synthetic Material
-C-2|Jeans|49.99|0|CLOTHING|ZARA|L|Black|Denim with 2% Elastane
-C-3|Jacket|89.50|0|CLOTHING|TOMMY_HILFIGER|XL|Red|Polyester and Nylon Blend
-C-4|Shoes|69.99|0|CLOTHING|NIKE|M|White|Synthetic Leather and Mesh
-C-5|Crop-Top|22.50|0|CLOTHING|ZARA|S|Green|Organic Cotton
-C-6|Trousers|55.00|0|CLOTHING|TOMMY_HILFIGER|M|Blue|Stretch Denim with 5% Polyester
-C-7|Jacket|120.00|0|CLOTHING|NIKE|L|Black|Waterproof Polyester
-C-8|Shoes|79.99|0|CLOTHING|ZARA|L|Red|Breathable Mesh and Rubber Sole
-C-9|T-shirt|18.99|0|CLOTHING|NIKE|XS|Yellow|50% Cotton, 50% Polyester
+C-1|T-shirt|25.99|0|SHIRT|NIKE|M|Blue|100% Cotton
+C-10|Shirt|60.00|0|SHIRT|ZARA|XL|Green|Recycled Cotton and Polyester
+C-11|Coat|150.00|0|JACKET|TOMMY_HILFIGER|M|Blue|Genuine Leather
+C-12|Trainers|90.00|0|SHOES|NIKE|S|Black|High-Quality Synthetic Material
+C-2|Jeans|49.99|0|TROUSERS|ZARA|L|Black|Denim with 2% Elastane
+C-3|Jacket|89.50|0|JACKET|TOMMY_HILFIGER|XL|Red|Polyester and Nylon Blend
+C-4|Shoes|69.99|0|SHOES|NIKE|M|White|Synthetic Leather and Mesh
+C-5|Crop-Top|22.50|0|SHIRT|ZARA|S|Green|Organic Cotton
+C-6|Trousers|55.00|0|SHOES|TOMMY_HILFIGER|M|Blue|Stretch Denim with 5% Polyester
+C-7|Jacket|120.00|0|JACKET|NIKE|L|Black|Waterproof Polyester
+C-8|Shoes|79.99|0|SHOES|ZARA|L|Red|Breathable Mesh and Rubber Sole
+C-9|T-shirt|18.99|0|SHIRT|NIKE|XS|Yellow|50% Cotton, 50% Polyester
