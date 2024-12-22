@@ -147,18 +147,18 @@ public class Executable {
             System.out.println();
             System.out.println("------ CUSTOMER MENU ------");
             System.out.println("1. View Inventory");
-            System.out.println("2. Add to Favourites");
-            System.out.println("3. View Favourites");
-            System.out.println("4. Find Item by ID");
-            System.out.println("5. Filter Inventory by Category");
-            System.out.println("6. Look Through Items");
-            System.out.println("7. Print Info for Customer");
-            System.out.println("8. Load Previous Purchases");
-            System.out.println("9. View Previous Purchases");
-            System.out.println("10. Add Money to Card");
-            System.out.println("11. Add Item to Current Purchase");
-            System.out.println("12. View Current Purchase");
-            System.out.println("13. Buy Items");
+            System.out.println("2. Find Item by ID");
+            System.out.println("3. Filter Inventory by Category");
+            System.out.println("4. View Previous Purchases");
+            System.out.println("5. Add to Favourites");
+            System.out.println("6. View Favourites");
+            System.out.println("7. Add Item to Current Purchase");
+            System.out.println("8. View Current Purchase");
+            System.out.println("9. Buy Items");
+            System.out.println("10. Print Info for Customer");
+            System.out.println("11. Add a Payment Card");
+            System.out.println("12. Check Card Balance");
+            System.out.println("13. Add Money to Card");
             System.out.println("14. Delete Customer Account");
             System.out.println("15. Logout");
             System.out.print("> Choose an option: ");
@@ -167,21 +167,52 @@ public class Executable {
 
             switch (choice) {
                 case "1" -> customer.getInventory().printInventory();
-                case "2" -> addToFavourites(customer, scanner);
-                case "3" -> customer.printFavourites();
-                case "4" -> findItem(customer, scanner);
-                case "5" -> filterByCategory(customer, scanner);
-                case "6" -> customer.itemsLookThru();
-                case "7" -> customer.printInfoForMe();
-                case "8" -> customer.loadPreviousPurchases();
-                case "9" -> customer.printPreviousPurchases(customer);
-                case "10" -> customer.addMoneyToCard(customer, scanner);
-                case "11" -> customer.addToCurrentPurchase(customer, scanner);
-                case "12" -> customer.printCurrentPurchase();
-                case "13" -> customer.buyItems();
+                case "2" -> findItem(customer, scanner);
+                case "3" -> filterByCategory(customer, scanner);
+                case "4" -> customer.printPreviousPurchases(customer);
+                case "5" -> addToFavourites(customer, scanner);
+                case "6" -> customer.printFavourites();
+                case "7" -> customer.addToCurrentPurchase(customer, scanner);
+                case "8" -> customer.printCurrentPurchase();
+                case "9" -> customer.buyItems();
+                case "10" -> customer.printInfoForMe();
+
+                case "11" -> {
+                    System.out.print("> Enter card number: ");
+                    String number = scanner.nextLine();
+                    System.out.print("> Enter expiry date (MM/YYYY): ");
+                    String expiryDate = scanner.nextLine();
+                    System.out.print("> Enter CCV: ");
+                    String ccv = scanner.nextLine();
+                    System.out.print("> Enter card type (Visa, MasterCard, AmericanExpress): ");
+                    String cardType = scanner.nextLine();
+                    System.out.print("> Enter initial balance: ");
+                    double amount = Double.parseDouble(scanner.nextLine());
+
+                    try {
+                        customer.addCard(number, expiryDate, ccv, cardType, amount);
+                        System.out.println("------ CARD ADDED SUCCESSFULLY ------");
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+                case "12" -> {
+                    if (customer.getCard() == null)
+                        System.out.println(">! No card associated with this account, [Executable, customerMenu --> case 12].");
+
+                    else
+                        customer.checkBalance();
+                }
+
+                case "13" -> customer.addMoneyToCard(customer, scanner);
+
                 case "14" -> {
                     customer.deleteMe();
+                    this.loginManager.reloadUsers();
                     exit = true;
+
+                    System.out.println("------ RETURNING TO LOGIN MENU ------");
                 }
 
                 case "15" -> {
