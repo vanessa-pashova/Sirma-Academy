@@ -6,7 +6,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 public abstract class AbstractCard  {
-    protected String firstName, familyName;
+    protected String firstName, familyName, email;
     protected String number;
     protected String expiryDate;
     protected String CCV;
@@ -14,9 +14,10 @@ public abstract class AbstractCard  {
 
     protected final String expiryDateFormat = "MM/yyyy";
 
-    public AbstractCard(String firstName, String familyName, String number, String expiryDate, String CCV, double balance) {
+    public AbstractCard(String firstName, String familyName, String email, String number, String expiryDate, String CCV, double balance) {
         this.setFirstName(firstName);
         this.setFamilyName(familyName);
+        this.setEmail(email);
         this.setNumber(number);
         this.setExpiryDate(expiryDate);
         this.setCCV(CCV);
@@ -26,6 +27,7 @@ public abstract class AbstractCard  {
     AbstractCard() {
         this.setFirstName("");
         this.setFamilyName("");
+        this.setEmail("");
         this.setNumber("");
         this.setExpiryDate("");
         this.setCCV("");
@@ -38,6 +40,10 @@ public abstract class AbstractCard  {
 
     public String getFamilyName() {
         return this.familyName;
+    }
+
+    public String getEmail() {
+        return this.email;
     }
 
     public String getNumber() {
@@ -68,6 +74,17 @@ public abstract class AbstractCard  {
             throw new IllegalArgumentException(">! FamilyName cannot be null or empty, [AbstractCard, setFamilyName()].");
 
         this.familyName = familyName.toUpperCase().charAt(0) + familyName.substring(1).toLowerCase();
+    }
+
+    public void setEmail(String email) {
+        if(email == null || email.isEmpty())
+            throw new IllegalArgumentException(">! User's email cannot be empty, [User, setEmail()].");
+
+        if(email.endsWith("@gmail.com") || email.endsWith("@abv.bg"))
+            this.email = email.toLowerCase();
+
+        else
+            throw new IllegalArgumentException(">! Invalid email domain, [User, setEmail()].");
     }
 
     public void setNumber(String number) {
