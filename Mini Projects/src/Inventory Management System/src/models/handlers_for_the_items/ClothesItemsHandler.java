@@ -71,7 +71,7 @@ public class ClothesItemsHandler extends AbstractCSVHandler<ClothingItems> {
 
             items.forEach((id, item) -> {
                 try {
-                    writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getCategory()
+                    writer.write(id + "|" + item.getName() + "|" + item.getPrice() + "|" + item.getDiscount() + "|" + item.getClothesCategory()
                             + "|" + item.getBrand() + "|" + item.getSize() + "|" + item.getColor() + "|" + item.getItemDetails());
                     writer.newLine();
                 } catch (IOException e) {
